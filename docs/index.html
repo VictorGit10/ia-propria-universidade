@@ -14,7 +14,7 @@
 :root{
   --bg:#f6f7f9; --paper:#ffffff; --ink:#18212b; --muted:#566271; --line:#d9dee5;
   --accent:#1d4f7a; --accent-soft:#e4edf5; --good:#2c6b4a; --good-soft:#e2f0e8; --warn:#8a5a0b; --warn-soft:#f5ead3;
-  --track:#e7ebf0;
+  --track:#e7ebf0; --c1:#8fb2d3; --c2:#1d4f7a; --g1:#93c7aa; --g2:#2c6b4a;
   --display:"Source Serif 4", Georgia, "Times New Roman", serif;
   --body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -22,14 +22,14 @@
   :root:not([data-theme="light"]){
     --bg:#11161c; --paper:#18202a; --ink:#e6ebf0; --muted:#9aa7b5; --line:#2c3743;
     --accent:#8db8e0; --accent-soft:#1c2c3c; --good:#86c9a3; --good-soft:#1b3127; --warn:#e2b765; --warn-soft:#352b18;
-    --track:#253040;
+    --track:#253040; --c1:#4a6f93; --c2:#a9cdee; --g1:#3f7a5c; --g2:#a3dcbc;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#11161c; --paper:#18202a; --ink:#e6ebf0; --muted:#9aa7b5; --line:#2c3743;
   --accent:#8db8e0; --accent-soft:#1c2c3c; --good:#86c9a3; --good-soft:#1b3127; --warn:#e2b765; --warn-soft:#352b18;
-  --track:#253040;
+  --track:#253040; --c1:#4a6f93; --c2:#a9cdee; --g1:#3f7a5c; --g2:#a3dcbc;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -57,23 +57,25 @@ tr.diff td{background:var(--accent-soft);font-weight:600}
 .cost{display:grid;grid-template-columns:150px 1fr 110px;gap:10px;align-items:center;font-size:15px}
 .cost i{display:block;height:12px;border-radius:3px;background:var(--accent)}
 .cost span:last-child{text-align:right;font-variant-numeric:tabular-nums}
-/* gráfico: cada barra vai do cenário mais barato ao mais caro, sobre um trilho que começa no zero */
+/* gráfico: para cada opção, duas barras a partir do zero (cenário mais barato e mais caro), com o valor no fim */
 .range{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px;margin:4px 0 16px;max-width:680px}
-.range h3{font-size:15px;font-weight:600;margin:0 0 4px}
-.range .note{margin:0 0 12px}
+.range h3{font-size:15px;font-weight:600;margin:0 0 8px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--muted);margin-bottom:6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px}
 .group{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
 .ritem{margin-bottom:12px}
-.rlabel{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:14px;margin-bottom:4px}
-.rlabel em{display:block;font-style:normal;font-size:13px;color:var(--muted)}
-.rlabel b{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.rbar{position:relative;height:12px;background:var(--track);border-radius:3px}
-.rbar i{position:absolute;top:0;bottom:0;background:var(--accent);border-radius:3px;min-width:4px}
-.rbar.api i{background:var(--good)}
-.scale.abs{position:relative;height:18px;display:block}
-.scale.abs span{position:absolute;white-space:nowrap;top:0;transform:translateX(-50%)}
-.scale.abs span:first-child{transform:none}
-.scale.abs span:last-child{transform:translateX(-100%) translateX(6px)}
-.scale{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;margin-top:2px}
+.rname{font-size:14px;margin-bottom:3px}
+.rname em{display:block;font-style:normal;font-size:13px;color:var(--muted)}
+.pair{display:grid;gap:3px}
+.prow{display:flex;align-items:center;gap:6px}
+.prow i{flex:none;display:block;height:11px;border-radius:0 3px 3px 0;background:var(--c1);min-width:3px}
+.prow.hi i{background:var(--c2)}
+.api .prow i{background:var(--g1)}
+.api .prow.hi i{background:var(--g2)}
+.prow span{font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.prow.hi span{font-weight:600}
+.prow.same i{background:var(--c2)}
 small{display:block;font-size:14px;color:var(--muted);max-width:68ch;margin-bottom:14px}
 a{color:var(--accent)}
 a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -115,13 +117,13 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <section>
   <h2>A equipe técnica pesa mais que a energia</h2>
   <p>Um servidor para a comunidade inteira, num data center que a universidade já tem, custa cerca de R$ 1,3 a 1,6 milhão por ano para operar:</p>
-  <div class="range" role="img" aria-label="Custo de operação por ano: equipe R$ 1,0 milhão; manutenção R$ 0,11 a 0,23 milhão; busca na web R$ 0,11 a 0,21 milhão; energia R$ 0,13 milhão">
+  <div class="range" role="img" aria-label="Custo de operação por ano, no cenário mais barato e no mais caro: equipe R$ 1,0 milhão nos dois; manutenção R$ 0,11 e 0,23 milhão; busca na web R$ 0,11 e 0,21 milhão; energia R$ 0,13 milhão nos dois">
     <h3>Custo de operação por ano</h3>
-    <div class="ritem"><div class="rlabel"><span>Equipe (4 pessoas)</span><b>R$ 1,0 mi</b></div><div class="rbar"><i style="left:0.00%;width:100.00%"></i></div></div>
-    <div class="ritem"><div class="rlabel"><span>Manutenção</span><b>R$ 0,11 a 0,23 mi</b></div><div class="rbar"><i style="left:11.00%;width:12.00%"></i></div></div>
-    <div class="ritem"><div class="rlabel"><span>Busca na web</span><b>R$ 0,11 a 0,21 mi</b></div><div class="rbar"><i style="left:11.00%;width:10.00%"></i></div></div>
-    <div class="ritem"><div class="rlabel"><span>Energia</span><b>R$ 0,13 mi</b></div><div class="rbar"><i style="left:0.00%;width:13.00%"></i></div></div>
-    <div class="scale"><span>0</span><span>R$ 0,5 mi</span><span>R$ 1,0 mi</span></div>
+    <div class="legend"><span><i style="background:var(--c1)"></i>cenário mais barato</span><span><i style="background:var(--c2)"></i>cenário mais caro</span></div>
+    <div class="ritem"><div class="rname">Equipe (4 pessoas)</div><div class="pair"><div class="prow same"><i style="width:calc((100% - 190px) * 1.0000)"></i><span>R$ 1,0 mi nos dois cenários</span></div></div></div>
+    <div class="ritem"><div class="rname">Manutenção</div><div class="pair"><div class="prow"><i style="width:calc((100% - 190px) * 0.1100)"></i><span>R$ 0,11 mi</span></div><div class="prow hi"><i style="width:calc((100% - 190px) * 0.2300)"></i><span>R$ 0,23 mi</span></div></div></div>
+    <div class="ritem"><div class="rname">Busca na web</div><div class="pair"><div class="prow"><i style="width:calc((100% - 190px) * 0.1100)"></i><span>R$ 0,11 mi</span></div><div class="prow hi"><i style="width:calc((100% - 190px) * 0.2100)"></i><span>R$ 0,21 mi</span></div></div></div>
+    <div class="ritem"><div class="rname">Energia</div><div class="pair"><div class="prow same"><i style="width:calc((100% - 190px) * 0.1300)"></i><span>R$ 0,13 mi nos dois cenários</span></div></div></div>
   </div>
   <p>A equipe custa R$ 250 mil por pessoa ao ano, com encargos, e cobre o horário comercial. Manter uma pessoa de plantão 24 horas, todos os dias, exige sozinho cerca de 4,2 pessoas.</p>
   <p>O servidor é um computador com 8 placas de processamento para IA (GPUs) da Nvidia, modelo B300. O único preço real de compra no Brasil encontrado é o de um contrato do Ministério Público de Minas Gerais, de dezembro de 2025: R$ 8,6 milhões por servidor. Alugar as mesmas 8 placas numa nuvem, 24 horas por dia, custa de R$ 3,2 a 3,3 milhões por ano no exterior ou R$ 4,4 milhões por ano no Brasil, só a máquina. Em dois anos, o aluguel passa o preço de um servidor importado (R$ 3,5 a 4,5 milhões), mas não o de um comprado no Brasil (R$ 7,1 a 8,7 milhões), e ainda faltaria pagar plataforma e armazenamento.</p>
@@ -129,18 +131,18 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 <section>
   <h2>Atender menos gente custa menos no total e mais por pessoa</h2>
-  <div class="range" role="img" aria-label="Custo em 5 anos. Comunidade toda, 7.000 pessoas por dia: serviço contratado R$ 2,8 a 4,9 milhões; IA própria com 1 servidor R$ 12,5 a 20,8 milhões; com 2 servidores R$ 18,7 a 33,1 milhões; com 2 servidores em sala nova R$ 22,6 a 40,9 milhões. Grupos menores: só docentes R$ 4,6 a 6,5 milhões; docentes e técnicos R$ 5,9 a 8,6 milhões.">
-    <h3>Custo em 5 anos de cada opção, em milhões de reais</h3>
-    <p class="note">Cada barra vai do cenário mais barato ao mais caro. O trilho cinza começa no zero.</p>
+  <div class="range" role="img" aria-label="Custo em 5 anos, no cenário mais barato e no mais caro. Comunidade toda, 7.000 pessoas por dia: serviço contratado R$ 2,8 e 4,9 milhões; IA própria com 1 servidor R$ 12,5 e 20,8 milhões; com 2 servidores R$ 18,7 e 33,1 milhões; com 2 servidores em sala nova R$ 22,6 e 40,9 milhões. Grupos menores: só docentes R$ 4,6 e 6,5 milhões; docentes e técnicos R$ 5,9 e 8,6 milhões.">
+    <h3>Custo em 5 anos de cada opção</h3>
+    <div class="legend"><span><i style="background:var(--c1)"></i>cenário mais barato</span><span><i style="background:var(--c2)"></i>cenário mais caro</span></div>
     <div class="group">Comunidade toda · 7.000 pessoas por dia</div>
-    <div class="ritem"><div class="rlabel"><span>Serviço contratado<em>R$ 7 a 12 por pessoa ativa/mês</em></span><b>R$ 2,8 a 4,9 mi</b></div><div class="rbar api"><i style="left:6.83%;width:5.12%"></i></div></div>
-    <div class="ritem"><div class="rlabel"><span>IA própria, 1 servidor<em>R$ 30 a 49 por pessoa ativa/mês</em></span><b>R$ 12,5 a 20,8 mi</b></div><div class="rbar"><i style="left:30.49%;width:20.24%"></i></div></div>
-    <div class="ritem"><div class="rlabel"><span>IA própria, 2 servidores (um de reserva)<em>R$ 45 a 79 por pessoa ativa/mês</em></span><b>R$ 18,7 a 33,1 mi</b></div><div class="rbar"><i style="left:45.61%;width:35.12%"></i></div></div>
-    <div class="ritem"><div class="rlabel"><span>IA própria, 2 servidores em sala nova<em>R$ 54 a 97 por pessoa ativa/mês</em></span><b>R$ 22,6 a 40,9 mi</b></div><div class="rbar"><i style="left:55.12%;width:44.63%"></i></div></div>
+    <div class="ritem api"><div class="rname">Serviço contratado<em>R$ 7 a 12 por pessoa ativa/mês</em></div><div class="pair"><div class="prow"><i style="width:calc((100% - 100px) * 0.0683)"></i><span>R$ 2,8 mi</span></div><div class="prow hi"><i style="width:calc((100% - 100px) * 0.1195)"></i><span>R$ 4,9 mi</span></div></div></div>
+    <div class="ritem"><div class="rname">IA própria, 1 servidor<em>R$ 30 a 49 por pessoa ativa/mês</em></div><div class="pair"><div class="prow"><i style="width:calc((100% - 100px) * 0.3049)"></i><span>R$ 12,5 mi</span></div><div class="prow hi"><i style="width:calc((100% - 100px) * 0.5073)"></i><span>R$ 20,8 mi</span></div></div></div>
+    <div class="ritem"><div class="rname">IA própria, 2 servidores (um de reserva)<em>R$ 45 a 79 por pessoa ativa/mês</em></div><div class="pair"><div class="prow"><i style="width:calc((100% - 100px) * 0.4561)"></i><span>R$ 18,7 mi</span></div><div class="prow hi"><i style="width:calc((100% - 100px) * 0.8073)"></i><span>R$ 33,1 mi</span></div></div></div>
+    <div class="ritem"><div class="rname">IA própria, 2 servidores em sala nova<em>R$ 54 a 97 por pessoa ativa/mês</em></div><div class="pair"><div class="prow"><i style="width:calc((100% - 100px) * 0.5512)"></i><span>R$ 22,6 mi</span></div><div class="prow hi"><i style="width:calc((100% - 100px) * 0.9976)"></i><span>R$ 40,9 mi</span></div></div></div>
     <div class="group">Grupos menores · IA própria · 12 mensagens por pessoa por dia</div>
-    <div class="ritem"><div class="rlabel"><span>Só docentes · 1.000 por dia<em>R$ 77 a 108 por pessoa ativa/mês</em></span><b>R$ 4,6 a 6,5 mi</b></div><div class="rbar"><i style="left:11.22%;width:4.63%"></i></div></div>
-    <div class="ritem"><div class="rlabel"><span>Docentes e técnicos · 2.000 por dia<em>R$ 49 a 72 por pessoa ativa/mês</em></span><b>R$ 5,9 a 8,6 mi</b></div><div class="rbar"><i style="left:14.39%;width:6.59%"></i></div></div>
-    <div class="scale abs"><span style="left:0">0</span><span style="left:24.39%">10</span><span style="left:48.78%">20</span><span style="left:73.17%">30</span><span style="left:97.56%">40</span></div>
+    <div class="ritem"><div class="rname">Só docentes · 1.000 por dia<em>R$ 77 a 108 por pessoa ativa/mês</em></div><div class="pair"><div class="prow"><i style="width:calc((100% - 100px) * 0.1122)"></i><span>R$ 4,6 mi</span></div><div class="prow hi"><i style="width:calc((100% - 100px) * 0.1585)"></i><span>R$ 6,5 mi</span></div></div></div>
+    <div class="ritem"><div class="rname">Docentes e técnicos · 2.000 por dia<em>R$ 49 a 72 por pessoa ativa/mês</em></div><div class="pair"><div class="prow"><i style="width:calc((100% - 100px) * 0.1439)"></i><span>R$ 5,9 mi</span></div><div class="prow hi"><i style="width:calc((100% - 100px) * 0.2098)"></i><span>R$ 8,6 mi</span></div></div></div>
+    <p class="note" style="margin:8px 0 0">O serviço contratado aparece em verde.</p>
   </div>
   <p>Nos grupos menores, a conta supõe 12 mensagens por pessoa por dia, e não 20, e usa servidores de outra classe, mais baratos: 1 servidor com 8 placas RTX PRO 6000 para docentes e 2 para docentes e técnicos. Só a opção com servidor de reserva tem máquina sobrando; nas outras, se um servidor parar, o serviço para ou perde capacidade. A sala nova inclui obra, energia, refrigeração e equipe maior, e leva de 18 a 30 meses até funcionar. As demais opções supõem um data center que já existe.</p>
 </section>
