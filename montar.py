@@ -4,7 +4,7 @@ fonte = pathlib.Path(r"C:\Users\amara\OneDrive\Documentos\Antigravity\Projeto Re
 s = fonte.read_text(encoding="utf-8")
 s = s.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', '')
 head_fim = s.index("</style>") + len("</style>")
-desc = "Quanto uma universidade do porte da UFG gastaria em 5 anos para rodar IA própria, comparado com contratar o serviço."
+desc = "Quanto custa ter uma IA própria rodando dentro da universidade: três públicos, do menor ao maior, com a UFG como referência."
 html = ('<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f'<meta name="description" content="{desc}">\n'

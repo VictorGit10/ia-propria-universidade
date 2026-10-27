@@ -3,246 +3,302 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Quanto uma universidade do porte da UFG gastaria em 5 anos para rodar IA própria, comparado com contratar o serviço.">
+<meta name="description" content="Quanto custa ter uma IA própria rodando dentro da universidade: três públicos, do menor ao maior, com a UFG como referência.">
 <meta property="og:title" content="IA própria na universidade">
-<meta property="og:description" content="Quanto uma universidade do porte da UFG gastaria em 5 anos para rodar IA própria, comparado com contratar o serviço.">
+<meta property="og:description" content="Quanto custa ter uma IA própria rodando dentro da universidade: três públicos, do menor ao maior, com a UFG como referência.">
 <title>IA própria na universidade</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
 <style>
-/* Layout: nota técnica em coluna única; resposta e tabela no topo, gráfico de faixas no meio, limites e premissas no fim */
+/* Página clara, de matéria: coluna de leitura em serifa, tabelas e controles em sans. Sem modo escuro, por pedido. */
 :root{
-  --bg:#f6f7f9; --paper:#ffffff; --ink:#18212b; --muted:#566271; --line:#d9dee5;
-  --accent:#1d4f7a; --accent-soft:#e4edf5; --good:#2c6b4a; --good-soft:#e2f0e8; --warn:#8a5a0b; --warn-soft:#f5ead3;
-  --track:#e7ebf0; --c1:#8fb2d3; --c2:#1d4f7a; --g1:#93c7aa; --g2:#2c6b4a;
-  --display:"Source Serif 4", Georgia, "Times New Roman", serif;
-  --body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#11161c; --paper:#18202a; --ink:#e6ebf0; --muted:#9aa7b5; --line:#2c3743;
-    --accent:#8db8e0; --accent-soft:#1c2c3c; --good:#86c9a3; --good-soft:#1b3127; --warn:#e2b765; --warn-soft:#352b18;
-    --track:#253040; --c1:#4a6f93; --c2:#a9cdee; --g1:#3f7a5c; --g2:#a3dcbc;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#11161c; --paper:#18202a; --ink:#e6ebf0; --muted:#9aa7b5; --line:#2c3743;
-  --accent:#8db8e0; --accent-soft:#1c2c3c; --good:#86c9a3; --good-soft:#1b3127; --warn:#e2b765; --warn-soft:#352b18;
-  --track:#253040; --c1:#4a6f93; --c2:#a9cdee; --g1:#3f7a5c; --g2:#a3dcbc;
-  color-scheme:dark;
+  color-scheme:light;
+  --bg:#f7f6f2; --paper:#ffffff; --ink:#1b2129; --muted:#5d6670; --line:#dedad1; --line2:#ebe8e1;
+  --accent:#1f3d5c; --accent-soft:#e9eef4; --mark:#9a6b1f; --mark-soft:#f6efe2;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);
-  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:0 64px}
-main{max-width:820px;margin:0 auto}
-header{padding-block:48px 8px}
-.eyebrow{font-size:13px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
-h1{font-family:var(--display);font-size:clamp(28px,5vw,40px);line-height:1.15;margin:8px 0 12px;text-wrap:balance}
-h2{font-family:var(--display);font-size:clamp(21px,3vw,26px);line-height:1.25;margin:0 0 14px;text-wrap:balance}
-p{margin:0 0 14px;max-width:68ch}
-ul{margin:0 0 14px;padding-left:20px;max-width:68ch;display:grid;gap:6px}
-.lead{font-size:18px}
-.note{font-size:14px;color:var(--muted)}
-section{padding-block:32px 4px;border-top:1px solid var(--line)}
-header + section{border-top:0;padding-top:8px}
-.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--paper);margin:4px 0 16px}
-table{border-collapse:collapse;width:100%;font-size:15px}
-th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-th{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
-tr:last-child td{border-bottom:0}
-td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-tr.diff td{background:var(--accent-soft);font-weight:600}
-.costs{display:grid;gap:8px;margin:4px 0 16px;max-width:620px}
-.cost{display:grid;grid-template-columns:150px 1fr 110px;gap:10px;align-items:center;font-size:15px}
-.cost i{display:block;height:12px;border-radius:3px;background:var(--accent)}
-.cost span:last-child{text-align:right;font-variant-numeric:tabular-nums}
-/* gráfico: para cada opção, duas barras a partir do zero (cenário mais barato e mais caro), com o valor no fim */
-.range{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px;margin:4px 0 16px;max-width:680px}
-.range h3{font-size:15px;font-weight:600;margin:0 0 8px}
-.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--muted);margin-bottom:6px}
-.legend span{display:inline-flex;align-items:center;gap:6px}
-.legend i{display:inline-block;width:14px;height:10px;border-radius:2px}
-.group{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
-.ritem{margin-bottom:12px}
-.rname{font-size:14px;margin-bottom:3px}
-.rname em{display:block;font-style:normal;font-size:13px;color:var(--muted)}
-.pair{display:grid;gap:3px}
-.prow{display:flex;align-items:center;gap:6px}
-.prow i{flex:none;display:block;height:11px;border-radius:0 3px 3px 0;background:var(--c1);min-width:3px}
-.prow.hi i{background:var(--c2)}
-.api .prow i{background:var(--g1)}
-.api .prow.hi i{background:var(--g2)}
-.prow span{font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.prow.hi span{font-weight:600}
-.prow.same i{background:var(--c2)}
-small{display:block;font-size:14px;color:var(--muted);max-width:68ch;margin-bottom:14px}
-a{color:var(--accent)}
-a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-@media (max-width:560px){
-  th,td{padding:8px}
-  td.n,th.n{white-space:normal}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:19px;line-height:1.6;margin:0}
+main{max-width:760px;margin:0 auto;padding:56px 20px 80px}
+a{color:var(--accent);text-underline-offset:2px}
+h1,h2,h3{font-family:var(--serif);font-weight:700;color:var(--ink);text-wrap:balance}
+.topo{border-top:3px solid var(--ink);padding-top:18px;margin-bottom:40px}
+.eyebrow,.kicker{font-family:var(--sans);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:clamp(34px,6vw,50px);line-height:1.1;margin:14px 0 22px;letter-spacing:-.01em}
+.lead{font-size:clamp(20px,2.6vw,23px);line-height:1.5;color:#2c343e;margin:0 0 10px}
+h2{font-size:27px;line-height:1.25;margin:48px 0 14px}
+.texto p{margin:0 0 16px}
+.aviso{font-family:var(--sans);font-size:15px;color:var(--accent);background:var(--accent-soft);border-left:3px solid var(--accent);padding:10px 14px;margin:20px 0 0 !important}
+
+/* Cartão de cada público */
+.pub{background:var(--paper);border:1px solid var(--line);border-radius:6px;margin:26px 0 30px;font-family:var(--sans);font-size:15.5px;line-height:1.45;box-shadow:0 1px 2px rgba(20,30,40,.04)}
+.pub-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding:20px 22px 16px;border-bottom:1px solid var(--line2)}
+.pub h3{font-size:25px;margin:4px 0 2px}
+.pub-sub{margin:0;color:var(--muted);font-size:15px}
+.seg{display:inline-flex;border:1px solid var(--accent);border-radius:999px;padding:3px;background:var(--paper)}
+.seg button{font:600 14px var(--sans);border:0;background:transparent;color:var(--accent);padding:7px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.seg button:focus-visible,.linha:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line2)}
+.kpi{padding:14px 18px;border-right:1px solid var(--line2)}
+.kpi:last-child{border-right:0}
+.kpi .r{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.kpi .v{font-family:var(--serif);font-size:25px;font-weight:700;line-height:1.2;margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi .s{font-size:13px;color:var(--muted)}
+.kpi.total .v{color:var(--accent)}
+.blocos{display:grid;grid-template-columns:1fr 1.25fr;gap:0}
+.bloco{padding:6px 18px 14px}
+.bloco+.bloco{border-left:1px solid var(--line2)}
+.bloco h4{font:700 12.5px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+.pub table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.pub th{font-weight:600;font-size:12px;color:var(--muted);text-align:right;padding:4px 0 6px;border-bottom:1px solid var(--line)}
+.pub th:first-child{text-align:left}
+.pub td{padding:8px 0;border-bottom:1px solid var(--line2);vertical-align:top}
+.pub td.n{text-align:right;white-space:nowrap;padding-left:12px}
+.linha{cursor:pointer}
+.linha td:first-child{padding-left:16px;position:relative}
+.linha td:first-child::before{content:"+";position:absolute;left:0;top:7px;color:var(--mark);font-weight:700}
+.linha[aria-expanded="true"] td:first-child::before{content:"−"}
+.linha:hover td{background:#faf8f3}
+.det td{background:var(--mark-soft);color:#3d3420;font-size:14.5px;line-height:1.5;padding:10px 12px;border-bottom:1px solid var(--line)}
+.soma td{font-weight:700;border-bottom:0;padding-top:10px}
+.total-linha{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;align-items:baseline;padding:14px 22px;background:var(--accent-soft);border-top:1px solid var(--line2)}
+.total-linha b{font-family:var(--serif);font-size:22px;color:var(--accent)}
+.rodape{padding:10px 22px 16px;color:var(--muted);font-size:13.5px}
+.rodape p{margin:4px 0 0}
+
+/* Tabela da API */
+.largo{margin:18px 0 8px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--paper);border:1px solid var(--line);border-radius:6px}
+table.api{width:100%;min-width:560px;border-collapse:collapse;font:15px/1.4 var(--sans);font-variant-numeric:tabular-nums}
+.api th{font-size:12.5px;font-weight:600;color:var(--muted);text-align:left;padding:12px 14px 8px;border-bottom:1px solid var(--line)}
+.api th.n{text-align:right}
+.api td{padding:9px 14px;border-bottom:1px solid var(--line2);vertical-align:top}
+.api td.n{text-align:right;white-space:nowrap}
+.api small{display:block;color:var(--muted);font-size:12.5px}
+.api tr.sub td{background:#fbfaf7;font-weight:600}
+.api tr.tot td{font-weight:700;color:var(--accent);background:var(--accent-soft)}
+.api tr:last-child td{border-bottom:0}
+.nota{font-family:var(--sans);font-size:13.5px;line-height:1.5;color:var(--muted);margin:10px 0 0}
+
+/* Opinião */
+.opiniao{margin:56px 0 0;padding:26px 26px 12px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--mark);border-radius:6px}
+.opiniao .kicker{color:var(--mark)}
+.opiniao h2{margin:6px 0 16px;font-size:26px}
+.opiniao p{margin:0 0 16px}
+
+.metodo{margin-top:48px}
+details{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 0}
+summary{cursor:pointer;font:700 17px var(--sans);padding:10px 0;color:var(--accent)}
+details p{font-size:16.5px}
+
+@media (max-width:700px){
+  body{font-size:18px}
+  main{padding:32px 16px 64px}
+  h2{font-size:24px;margin-top:40px}
+  .pub-head{padding:16px 16px 14px}
+  .seg{width:100%}
+  .seg button{flex:1}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi{padding:12px 14px}
+  .kpi:nth-child(2){border-right:0}
+  .kpi:nth-child(-n+2){border-bottom:1px solid var(--line2)}
+  .kpi .v{font-size:22px}
+  .blocos{grid-template-columns:1fr}
+  .bloco{padding:4px 14px 12px}
+  .bloco+.bloco{border-left:0;border-top:1px solid var(--line2)}
+  .total-linha{padding:12px 16px}
+  .rodape{padding:10px 16px 14px}
+  .opiniao{padding:20px 18px 6px}
 }
+.largo + .texto{margin-top:26px}
+
 </style>
 </head>
 <body>
 <main>
-<header>
-  <div class="eyebrow">Levantamento com preços de 13/10/2026 · referência: UFG</div>
-  <h1>Uma universidade do porte da UFG gastaria de R$ 12,5 a 20,8 milhões em 5 anos para ter IA própria</h1>
+<header class="topo">
+  <div class="eyebrow">Levantamento · UFG como referência · outubro de 2026</div>
+  <h1>Quanto custa ter uma IA própria rodando dentro da universidade?</h1>
+  <p class="lead">Com um modelo de IA rodando dentro da universidade, as conversas e os documentos de quem usa ficam nela. E abre-se a chance de ajustar o modelo aos assuntos da própria instituição.</p>
 </header>
 
-<section>
-  <p class="lead">Esse valor atende 7.000 pessoas por dia e soma a compra do equipamento a 5 anos de operação, no caminho mais enxuto: um servidor, sem reserva, num data center que a universidade já tem. Quase todo o dinheiro vai para duas coisas: o servidor de IA e a equipe técnica.</p>
+<section class="texto">
+  <h2>O levantamento</h2>
+  <p>Para este levantamento, escolhemos o GLM 5.3 Flash, da empresa chinesa Z.ai. É um modelo de pesos abertos: qualquer um pode baixá-lo e rodá-lo nos próprios computadores, sem pagar nada à empresa, e rodando na universidade ele não envia nada para fora. Cabe em um único servidor, é rápido e está entre os melhores desse porte.</p>
+  <p>Fomos ver o que seria preciso comprar e manter para rodá-lo por 5 anos. A conta inclui a compra (servidores, armazenamento, rede, instalação no data center da universidade, imprevistos) e a operação (equipe, energia, manutenção e busca na web; sozinho, o modelo não acessa a internet e precisa de um serviço de busca pago). Fizemos a conta para públicos crescentes, começando pelos docentes. Os valores supõem a importação direta dos servidores; comprados no Brasil, por licitação, eles custam mais. O resultado vai de R$ 5,3 milhões em 5 anos, só para os docentes, a R$ 14,3 milhões para a comunidade toda.</p>
+  <p>Cada tabela mostra o que se compra e quanto custa a operação. O seletor troca entre o básico, só com as máquinas necessárias, e a opção com redundância, que acrescenta um servidor de reserva para assumir se outro parar. O custo por pessoa divide o total pelas pessoas que usam a IA num dia, não pela comunidade inteira.</p>
+  <p class="aviso">Toque ou clique em qualquer linha das tabelas para ver como o valor foi calculado.</p>
 </section>
 
-<section>
-  <h2>Ter IA própria garante controle sobre dados que não podem sair da universidade</h2>
-  <p>Na IA própria, a universidade compra o computador e roda nele um modelo de pesos abertos, que qualquer um pode baixar e usar. Perguntas e documentos não saem da universidade; só as consultas de busca na web, quando usadas, vão para o buscador. Processos sigilosos, dados pessoais sensíveis e pesquisas sob contrato de confidencialidade não deveriam sair da instituição.</p>
-  <p>As contas institucionais da UFG já incluem, sem custo, Gemini for Education e NotebookLM (Google) e Copilot Chat (Microsoft), e a edição exata ainda precisa ser confirmada com o centro de informática da UFG (Cercomp). Nesses serviços, as mensagens saem da universidade. Rodar o modelo dentro da universidade não envia as conversas a ninguém, mesmo quando o modelo é chinês, como o usado na conta. Continua o viés com que o modelo foi treinado em temas sensíveis, que precisa ser testado.</p>
+<section class="texto"><h2>Do menor público ao maior</h2>
+  <p>O primeiro público são os docentes: 1.000 pessoas por dia, quase metade dos 2.160, com 12 mensagens cada. É uma hipótese de uso alto, para não subestimar a máquina. Esse uso cabe em 1 servidor com 8 placas de vídeo próprias para IA, as Nvidia RTX PRO 6000.</p>
 </section>
 
-<section>
-  <h2>A conta supõe 7.000 pessoas por dia, e a hora de maior uso define o tamanho da máquina</h2>
-  <p>A comunidade da UFG tem cerca de 35 mil pessoas: 30.838 estudantes, 2.160 docentes e 2.195 técnicos-administrativos, segundo o Relato Integrado de Gestão 2024. A conta supõe 7.000 pessoas usando a IA no mesmo dia (20% da comunidade), com 20 mensagens cada: 140 mil mensagens por dia, em 25 dias de uso por mês, ou 300 por ano. Na Universidade de Michigan, cerca de 18% da comunidade usa a IA da universidade num dia. Um quinto das mensagens do dia cai na hora de maior uso, e é essa hora que define o tamanho da máquina.</p>
-</section>
-
-<section>
-  <h2>O modelo cabe com folga na memória, mas a folga de velocidade é de apenas 8%</h2>
-  <p>A conta usa o modelo GLM 5.3 Flash, da empresa chinesa Z.ai, com licença MIT, que permite uso livre. Uma alternativa é o DeepSeek V4.1 Flash, melhor para documentos longos. O modelo reúne 320 bilhões de parâmetros (os números que o modelo aprendeu no treino), mas só 18 bilhões atuam em cada pedaço de resposta, o que o deixa rápido. Comprimido em 4 bits, ocupa cerca de 190 GB; em 8 bits, cerca de 330 GB. Comprimir reduz um pouco a qualidade, mas só um teste mostra o tamanho da perda.</p>
-  <p>A máquina é um servidor com 8 placas de processamento para IA (GPUs) Nvidia B300. Cada placa traz 288 GB de memória, somando 2.304 GB no servidor. As duas versões do modelo cabem com folga; o resto da memória guarda as conversas em andamento.</p>
-  <p>O limite do sistema é a velocidade. O modelo escreve em tokens (pedaços de palavras). Cada mensagem usa cerca de 3.000 tokens de entrada (pergunta, histórico, documentos e buscas) e 1.000 de saída (resposta). Numa estimativa, o servidor gera cerca de 14 mil tokens por segundo. Por segurança, a conta adota 60% disso: 8,4 mil. Na hora de maior uso, as 7.000 pessoas demandam 7,8 mil tokens por segundo, sobrando 8%. Se a velocidade real for 7% menor do que a estimada, já é preciso um segundo servidor.</p>
-</section>
-
-<section>
-  <h2>A compra inicial custa de R$ 5,8 a 12,9 milhões, conforme o caminho de compra do servidor</h2>
-  <p>Além do servidor de IA, a compra inclui equipamentos de apoio e a adaptação de uma sala que a universidade já tem.</p>
-  <div class="scroll">
-  <table>
-    <tr><th>Item</th><th class="n">Importado</th><th class="n">Comprado no Brasil</th></tr>
-    <tr><td>Servidor de IA (8 GPUs B300)</td><td class="n">R$&nbsp;3,5 a 4,5&nbsp;mi</td><td class="n">R$&nbsp;7,1 a 8,7&nbsp;mi</td></tr>
-    <tr><td>3 servidores comuns</td><td class="n">R$&nbsp;0,24 a 0,36&nbsp;mi</td><td class="n">R$&nbsp;0,24 a 0,36&nbsp;mi</td></tr>
-    <tr><td>Armazenamento (100 TB)</td><td class="n">R$&nbsp;0,3 a 0,6&nbsp;mi</td><td class="n">R$&nbsp;0,3 a 0,6&nbsp;mi</td></tr>
-    <tr><td>Rede e firewall</td><td class="n">R$&nbsp;0,4 a 0,8&nbsp;mi</td><td class="n">R$&nbsp;0,4 a 0,8&nbsp;mi</td></tr>
-    <tr><td>Adaptação da sala</td><td class="n">R$&nbsp;0,8 a 1,3&nbsp;mi</td><td class="n">R$&nbsp;0,8 a 1,3&nbsp;mi</td></tr>
-    <tr><td>Imprevistos (10%)</td><td class="n">R$&nbsp;0,5 a 0,8&nbsp;mi</td><td class="n">R$&nbsp;0,9 a 1,2&nbsp;mi</td></tr>
-    <tr class="diff"><td>Compra inicial</td><td class="n">R$&nbsp;5,8 a 8,3&nbsp;mi</td><td class="n">R$&nbsp;9,8 a 12,9&nbsp;mi</td></tr>
-  </table>
+<section class="pub" data-k="doc" aria-labelledby="t-doc">
+  <div class="pub-head">
+    <div>
+      <div class="kicker">1 de 3</div>
+      <h3 id="t-doc">Docentes</h3>
+      <p class="pub-sub">cerca de 1.000 pessoas por dia, 12 mensagens cada</p>
+    </div>
+    <div class="seg" role="group" aria-label="Cenário para docentes">
+      <button type="button" data-res="0" aria-pressed="true">Básico</button><button type="button" data-res="1" aria-pressed="false">Com redundância</button>
+    </div>
   </div>
-  <p class="note">mi = milhões de reais.</p>
-  <p>Para o servidor, há dois caminhos: importar direto com isenção de impostos para pesquisa (Lei 8.010/90) ou comprar no Brasil por licitação. O preço do servidor nacional vem do único contrato público localizado, do Ministério Público de Minas Gerais (dezembro de 2025); o valor menor é sem ICMS e o maior com ICMS, ambos incluindo R$ 83,65 mil de suporte. O preço importado é uma estimativa a partir da compra da USP para o cluster Jairu. Os demais itens são estimativas sem preço público: os 3 servidores comuns rodam o site, o login, as cotas e o banco de dados, e a adaptação da sala cobre nobreak, refrigeração e proteção contra incêndio.</p>
+  <div class="pub-body"></div>
+</section>
+<section class="texto">
+  <p>Com a entrada dos técnicos, o público dobra para 2.000 pessoas por dia e passa a precisar de 2 servidores do mesmo tipo. Atender docentes e técnicos sem reserva custa quase o mesmo que pôr reserva só para os docentes: R$ 6,7 milhões contra R$ 6,6 milhões em 5 anos.</p>
 </section>
 
-<section>
-  <h2>A operação custa de R$ 6,7 a 7,8 milhões em 5 anos e tem a equipe técnica como maior despesa</h2>
-  <p>Operar o sistema custa de R$ 1,3 a 1,6 milhão por ano, ou R$ 6,7 a 7,8 milhões em 5 anos. De dois terços a três quartos disso são a equipe de 4 pessoas.</p>
-  <div class="scroll">
-  <table>
-    <tr><th>Item</th><th class="n">Por ano</th><th class="n">Em 5 anos</th></tr>
-    <tr><td>Equipe: 4 pessoas × R$ 250 mil</td><td class="n">R$&nbsp;1,0&nbsp;mi</td><td class="n">R$&nbsp;5,0&nbsp;mi</td></tr>
-    <tr><td>Manutenção</td><td class="n">R$&nbsp;0,11 a 0,23&nbsp;mi</td><td class="n">R$&nbsp;0,54 a 1,14&nbsp;mi</td></tr>
-    <tr><td>Busca na web</td><td class="n">R$&nbsp;0,11 a 0,21&nbsp;mi</td><td class="n">R$&nbsp;0,53 a 1,05&nbsp;mi</td></tr>
-    <tr><td>Energia</td><td class="n">R$&nbsp;0,13&nbsp;mi</td><td class="n">R$&nbsp;0,66&nbsp;mi</td></tr>
-    <tr class="diff"><td>Operação</td><td class="n">R$&nbsp;1,3 a 1,6&nbsp;mi</td><td class="n">R$&nbsp;6,7 a 7,8&nbsp;mi</td></tr>
-  </table>
+<section class="pub" data-k="doctae" aria-labelledby="t-doctae">
+  <div class="pub-head">
+    <div>
+      <div class="kicker">2 de 3</div>
+      <h3 id="t-doctae">Docentes e técnicos</h3>
+      <p class="pub-sub">cerca de 2.000 pessoas por dia, 12 mensagens cada</p>
+    </div>
+    <div class="seg" role="group" aria-label="Cenário para docentes e técnicos">
+      <button type="button" data-res="0" aria-pressed="true">Básico</button><button type="button" data-res="1" aria-pressed="false">Com redundância</button>
+    </div>
   </div>
-  <p>Cada profissional custa R$ 250 mil por ano, com encargos. As 4 pessoas cobrem o horário comercial; manter uma pessoa de plantão 24 horas, todos os dias, exige sozinho cerca de 4,2 pessoas. Na busca na web, o modelo faz consultas externas em 10% a 20% das mensagens, a US$ 5 por mil buscas. Na energia, o servidor e os equipamentos de apoio somam cerca de 16,5 kW, e a conta acrescenta 50% para a refrigeração, pela tarifa da Equatorial Goiás com tributos.</p>
-  <p>O total em 5 anos é a compra inicial mais a operação. No cenário mais barato, com o servidor importado: R$ 5,8 + 6,7 = R$ 12,5 milhões. No mais caro, com o servidor comprado no Brasil: R$ 12,9 + 7,8 = R$ 20,8 milhões. Isso dá R$ 30 a 49 por mês por pessoa ativa, quem usa a IA naquele dia: a conta divide o total por 60 meses e pelas 7.000 pessoas por dia, não pelas 35 mil da comunidade.</p>
+  <div class="pub-body"></div>
+</section>
+<section class="texto">
+  <p>Abrir o atendimento para todo mundo, incluindo os 31 mil estudantes, é a hipótese mais distante e entra aqui quase como um exercício. Para receber 7.000 pessoas por dia com 20 mensagens cada, seriam precisos 9 servidores como os anteriores. Sai mais em conta trocar de máquina: 1 servidor com 8 placas Nvidia B300, bem mais caro e bem mais rápido. Mesmo assim, a folga é pequena: o servidor dá conta da hora de pico com só 8% de sobra.</p>
 </section>
 
-<section>
-  <h2>Atender menos gente custa menos no total e mais por pessoa; reserva e sala nova encarecem muito</h2>
-  <p>O custo muda com o tamanho do público, com a reserva de máquina e com a sala.</p>
-  <div class="range" role="img" aria-label="Custo em 5 anos, no cenário mais barato e no mais caro. Comunidade toda, 7.000 pessoas por dia: IA própria com 1 servidor R$ 12,5 e 20,8 milhões; com 2 servidores R$ 18,7 e 33,1 milhões; com 2 servidores em sala nova R$ 22,6 e 40,9 milhões. Grupos menores: só docentes R$ 4,6 e 6,5 milhões; docentes e técnicos R$ 5,9 e 8,6 milhões.">
-    <h3>Custo em 5 anos de cada opção</h3>
-    <div class="legend"><span><i style="background:var(--c1)"></i>cenário mais barato</span><span><i style="background:var(--c2)"></i>cenário mais caro</span></div>
-    <div class="group">Comunidade toda · 7.000 pessoas por dia · 20 mensagens</div>
-    <div class="ritem"><div class="rname">IA própria, 1 servidor<em>R$ 30 a 49 por pessoa ativa/mês</em></div><div class="pair"><div class="prow"><i style="width:calc((100% - 100px) * 0.3049)"></i><span>R$ 12,5 mi</span></div><div class="prow hi"><i style="width:calc((100% - 100px) * 0.5073)"></i><span>R$ 20,8 mi</span></div></div></div>
-    <div class="ritem"><div class="rname">IA própria, 2 servidores (um de reserva)<em>R$ 45 a 79 por pessoa ativa/mês</em></div><div class="pair"><div class="prow"><i style="width:calc((100% - 100px) * 0.4561)"></i><span>R$ 18,7 mi</span></div><div class="prow hi"><i style="width:calc((100% - 100px) * 0.8073)"></i><span>R$ 33,1 mi</span></div></div></div>
-    <div class="ritem"><div class="rname">IA própria, 2 servidores em sala nova<em>R$ 54 a 97 por pessoa ativa/mês</em></div><div class="pair"><div class="prow"><i style="width:calc((100% - 100px) * 0.5512)"></i><span>R$ 22,6 mi</span></div><div class="prow hi"><i style="width:calc((100% - 100px) * 0.9976)"></i><span>R$ 40,9 mi</span></div></div></div>
-    <div class="group">Grupos menores · IA própria · 12 mensagens por pessoa por dia</div>
-    <div class="ritem"><div class="rname">Só docentes · 1.000 por dia<em>R$ 77 a 108 por pessoa ativa/mês</em></div><div class="pair"><div class="prow"><i style="width:calc((100% - 100px) * 0.1122)"></i><span>R$ 4,6 mi</span></div><div class="prow hi"><i style="width:calc((100% - 100px) * 0.1585)"></i><span>R$ 6,5 mi</span></div></div></div>
-    <div class="ritem"><div class="rname">Docentes e técnicos · 2.000 por dia<em>R$ 49 a 72 por pessoa ativa/mês</em></div><div class="pair"><div class="prow"><i style="width:calc((100% - 100px) * 0.1439)"></i><span>R$ 5,9 mi</span></div><div class="prow hi"><i style="width:calc((100% - 100px) * 0.2098)"></i><span>R$ 8,6 mi</span></div></div></div>
+<section class="pub" data-k="todos" aria-labelledby="t-todos">
+  <div class="pub-head">
+    <div>
+      <div class="kicker">3 de 3</div>
+      <h3 id="t-todos">Comunidade toda</h3>
+      <p class="pub-sub">cerca de 7.000 pessoas por dia, 20 mensagens cada</p>
+    </div>
+    <div class="seg" role="group" aria-label="Cenário para comunidade toda">
+      <button type="button" data-res="0" aria-pressed="true">Básico</button><button type="button" data-res="1" aria-pressed="false">Com redundância</button>
+    </div>
   </div>
-  <p>Os grupos menores supõem 12 mensagens por pessoa por dia, e não 20, e usam um servidor mais barato, com 8 placas Nvidia RTX PRO 6000 de 96 GB (768 GB no total): 1 servidor para docentes, 2 para docentes e técnicos. Cada um custa de R$ 0,85 a 1,1 milhão importado ou de R$ 1,1 a 1,6 milhão no Brasil, estimativa a partir do preço da placa no varejo brasileiro (R$ 93 a 114 mil). Nele, só a versão comprimida do modelo deixa espaço para as conversas.</p>
-  <p>Só a opção com servidor de reserva tem máquina sobrando; nas outras, se um servidor parar, o serviço para ou perde capacidade. A sala nova inclui obra, subestação de energia, nobreak, gerador, refrigeração e proteção contra incêndio, pede equipe maior e leva de 18 a 30 meses até funcionar. As demais opções supõem um data center que já existe.</p>
+  <div class="pub-body"></div>
+</section>
+<section class="texto">
+  <p>O custo total cresce com o público, mas o custo por pessoa cai: de R$ 88 por mês nos docentes para R$ 34 na comunidade toda, no cenário básico. Em todos os casos, a equipe responde por cerca de dois terços a três quartos do custo de operação.</p>
 </section>
 
-<section>
-  <h2>Equipamentos já instalados na UFG podem baratear a IA própria se forem cedidos</h2>
-  <p>O Centro de Excelência em Inteligência Artificial (CEIA-UFG) anunciou 8 equipamentos de IA por R$ 40 milhões, com 3 servidores Nvidia DGX B200 já instalados. O Laboratório de Computação de Alto Desempenho (LaMCAD) terá novo data center de 600 kW, dez vezes a capacidade elétrica atual, com entrega prevista para novembro de 2026.</p>
-  <p>Se o CEIA e o LaMCAD cederem um servidor com 8 placas B200, atender 4.200 pessoas por dia custa de R$ 5,7 a 7,2 milhões em 5 anos (R$ 23 a 28 por pessoa ativa por mês). Mais da metade é a equipe de 3 pessoas. Essa conta supõe 12 mensagens diárias por pessoa, foi feita com o modelo DeepSeek V4.1 Flash, não inclui o valor do servidor cedido e não tem reserva. A cessão depende de conversa com o CEIA e o LaMCAD.</p>
+<section class="texto">
+  <h2>E dá para ajustar o modelo à universidade?</h2>
+  <p>Em parte. O ajuste completo, que mexe em todos os 320 bilhões de parâmetros do modelo, não cabe em nenhuma das máquinas: pediria cerca de 5 mil GB de memória. Cabe o ajuste leve, chamado LoRA, que treina só uma camada pequena por cima do modelo. No servidor com placas B300, sobra memória para isso. No servidor com placas RTX PRO 6000, só cabe com o modelo na versão compactada, e as ferramentas para treinar modelos desse tipo assim ainda são pouco maduras: seria preciso testar antes.</p>
+  <p>Enquanto treina, o servidor não atende ninguém. O treino ficaria para a noite, os fins de semana e as férias, ou ocuparia o servidor de reserva, que nesse tempo deixa de ser reserva. E nem sempre o ajuste é o caminho: para o modelo responder sobre as normas e os documentos da universidade, muitas vezes basta ligá-lo a esses documentos, sem treinar nada.</p>
 </section>
 
-<section>
-  <h2>Contratar o mesmo modelo como serviço custa de R$ 4,3 a 5,4 milhões em 5 anos, mas os dados saem do país</h2>
-  <p>Falta comparar com a alternativa: e se a universidade, em vez de comprar o servidor, contratasse o mesmo modelo como serviço?</p>
-  <p>No serviço contratado, a universidade paga pelo uso a uma empresa que roda o mesmo modelo nos computadores dela, fora do Brasil. O preço usado é o da Z.ai, a empresa chinesa que criou o modelo. A universidade ainda mantém o site por onde a comunidade entra (login, conversa e cota de uso), com 2 pessoas que cuidam do site, do contrato e do suporte, e paga a busca na web.</p>
-  <p>A cobrança é feita por milhão de tokens, com valores distintos para entrada e saída. A parte da entrada que se repete entre mensagens (conversa anterior e instruções fixas) sai mais barata; a conta supõe que metade da entrada se repete. Passo a passo:</p>
-  <div class="scroll">
-  <table>
-    <tr><th>Passo</th><th class="n">Conta</th><th class="n">Resultado</th></tr>
-    <tr><td>Mensagens por ano</td><td class="n">7.000 pessoas × 20 mensagens × 300 dias</td><td class="n">42&nbsp;milhões</td></tr>
-    <tr><td>Tokens de entrada</td><td class="n">42&nbsp;milhões × 3.000</td><td class="n">126 bilhões</td></tr>
-    <tr><td>Tokens de saída</td><td class="n">42&nbsp;milhões × 1.000</td><td class="n">42 bilhões</td></tr>
-    <tr><td>Entrada nova</td><td class="n">63 bilhões × US$ 0,15 por&nbsp;milhão</td><td class="n">US$ 9.450</td></tr>
-    <tr><td>Entrada repetida</td><td class="n">63 bilhões × US$ 0,03 por&nbsp;milhão</td><td class="n">US$ 1.890</td></tr>
-    <tr><td>Saída</td><td class="n">42 bilhões × US$ 0,50 por&nbsp;milhão</td><td class="n">US$ 21.000</td></tr>
-    <tr class="diff"><td>Uso do modelo por ano</td><td class="n">US$ 32.340 × R$&nbsp;5,00</td><td class="n">R$&nbsp;161,7&nbsp;mil</td></tr>
-  </table>
-  </div>
-  <p>Somando a equipe, o site e a busca:</p>
-  <div class="scroll">
-  <table>
-    <tr><th>Item</th><th class="n">Por ano</th><th class="n">Em 5 anos</th></tr>
-    <tr><td>Uso do modelo</td><td class="n">R$&nbsp;0,16&nbsp;mi</td><td class="n">R$&nbsp;0,81&nbsp;mi</td></tr>
-    <tr><td>Equipe: 2 pessoas × R$ 250 mil</td><td class="n">R$&nbsp;0,5&nbsp;mi</td><td class="n">R$&nbsp;2,5&nbsp;mi</td></tr>
-    <tr><td>Hospedagem e programas do site</td><td class="n">R$&nbsp;0,1 a 0,2&nbsp;mi</td><td class="n">R$&nbsp;0,5 a 1,0&nbsp;mi</td></tr>
-    <tr><td>Busca na web</td><td class="n">R$&nbsp;0,11 a 0,21&nbsp;mi</td><td class="n">R$&nbsp;0,53 a 1,05&nbsp;mi</td></tr>
-    <tr class="diff"><td>Serviço contratado</td><td class="n">R$&nbsp;0,87 a 1,07&nbsp;mi</td><td class="n">R$&nbsp;4,3 a 5,4&nbsp;mi</td></tr>
-  </table>
-  </div>
-  <p>O uso do modelo é a menor parte; o que mais pesa é a equipe e o site. A IA própria custa de 2,9 a 3,9 vezes o serviço contratado: cenário mais barato contra mais barato, 12,5 ÷ 4,3 = 2,9; mais caro contra mais caro, 20,8 ÷ 5,4 = 3,9.</p>
-  <div class="scroll">
-  <table>
-    <tr><th>Opção</th><th class="n">Em 5 anos</th><th class="n">Por pessoa ativa, por mês</th></tr>
-    <tr><td>IA própria, 1 servidor</td><td class="n">R$&nbsp;12,5 a 20,8&nbsp;mi</td><td class="n">R$&nbsp;30 a 49</td></tr>
-    <tr><td>Serviço contratado</td><td class="n">R$&nbsp;4,3 a 5,4&nbsp;mi</td><td class="n">R$&nbsp;10 a 13</td></tr>
-    <tr class="diff"><td>Quantas vezes mais cara</td><td class="n">2,9 a 3,9 vezes</td><td class="n">2,9 a 3,9 vezes</td></tr>
-  </table>
-  </div>
-  <p>A conta usa 3.000 tokens de entrada e 1.000 de saída, o bastante para conversas curtas. Com documentos anexados, buscas e modelos que “pensam” antes de responder, o volume cresce. Com 8.000 tokens de entrada e 2.000 de saída, o serviço contratado sobe para R$ 5,3 a 6,4 milhões em 5 anos, enquanto a IA própria passa a exigir 2 servidores apenas para dar conta do volume, sem nenhuma reserva: R$ 18,7 a 33,1 milhões em 5 anos. A diferença fica entre 3,5 e 5,2 vezes.</p>
-  <p>Em troca da economia, as mensagens saem da universidade e vão para a China. Outros governos já bloquearam o uso de serviços chineses desse tipo por esse motivo. Contratar a Z.ai diretamente traz duas dúvidas sem parecer jurídico: como uma universidade federal paga uma empresa chinesa e como a LGPD trata a transferência de dados pessoais para a China. Empresas dos Estados Unidos também vendem o modelo; na Fireworks, o uso custa 25% a mais (cerca de R$ 0,2 milhão a mais em 5 anos), e os dados continuam saindo do Brasil.</p>
-  <p>Há ainda a opção de alugar o servidor numa nuvem, em vez de comprar: R$ 3,2 a 3,3 milhões por ano no exterior ou R$ 4,4 milhões por ano no Brasil, cobrindo só a máquina com 8 placas 24 horas por dia, sem site nem armazenamento. Em dois anos, o aluguel no exterior (R$ 6,3 a 6,7 milhões) supera a compra do servidor importado, mas não do nacional; o aluguel no Brasil (R$ 8,8 milhões em dois anos) supera os dois.</p>
-  <p>Um caminho do meio, ainda sem custo calculado, é deixar dentro da universidade só o que precisa ficar dentro e contratar o resto como serviço.</p>
+<section class="texto">
+  <h2>E se, em vez de comprar, a universidade pagasse por uso?</h2>
+  <p>Há outro jeito de usar o mesmo modelo: pagar a uma empresa que já o roda nos computadores dela, fora do Brasil, e cobra pelo uso. A cobrança é por token, os pedaços de palavra que o modelo lê e escreve: mil tokens são cerca de 700 palavras. Na Z.ai, criadora do GLM 5.3 Flash, a entrada (pergunta, histórico e documentos) custa US$ 0,15 por milhão de tokens, ou US$ 0,03 no trecho que se repete de uma mensagem para outra (numa conversa, o histórico e os documentos são reenviados a cada pergunta), e a saída (a resposta) custa US$ 0,50 por milhão.</p>
+  <p>Mesmo pagando por uso, a universidade ainda mantém o site por onde as pessoas entram, com login e cota de uso, uma equipe pequena para cuidar dele e do contrato, e a busca na web. A tabela faz a conta para os três públicos, com os mesmos números de pessoas e de mensagens.</p>
+</section>
+<div class="largo">
+<div class="scroll"><table class="api">
+<thead><tr><th>Pagar por uso</th><th class="n">Docentes</th><th class="n">Docentes e técnicos</th><th class="n">Comunidade toda</th></tr></thead><tbody>
+<tr class=""><td>Mensagens por ano<small>pessoas × mensagens × 300 dias</small></td><td class="n">3,6 milhões</td><td class="n">7,2 milhões</td><td class="n">42 milhões</td></tr>
+<tr class=""><td>Tokens de entrada<small>× 3.000 por mensagem</small></td><td class="n">10,8 bi</td><td class="n">21,6 bi</td><td class="n">126 bi</td></tr>
+<tr class=""><td>Tokens de saída<small>× 1.000 por mensagem</small></td><td class="n">3,6 bi</td><td class="n">7,2 bi</td><td class="n">42 bi</td></tr>
+<tr class="sub"><td>Uso do modelo por ano<small>tokens × preço, a R$ 5 por dólar</small></td><td class="n">US$&nbsp;2.772<small>R$&nbsp;14&nbsp;mil</small></td><td class="n">US$&nbsp;5.544<small>R$&nbsp;28&nbsp;mil</small></td><td class="n">US$&nbsp;32.340<small>R$&nbsp;162&nbsp;mil</small></td></tr>
+<tr class=""><td>Equipe<small>site, contrato e suporte</small></td><td class="n">R$&nbsp;250&nbsp;mil<small>1 pessoa</small></td><td class="n">R$&nbsp;250&nbsp;mil<small>1 pessoa</small></td><td class="n">R$&nbsp;500&nbsp;mil<small>2 pessoas</small></td></tr>
+<tr class=""><td>Site e hospedagem<small>login, conversa e cota de uso</small></td><td class="n">R$&nbsp;75&nbsp;mil</td><td class="n">R$&nbsp;75&nbsp;mil</td><td class="n">R$&nbsp;150&nbsp;mil</td></tr>
+<tr class=""><td>Busca na web<small>igual à da IA própria</small></td><td class="n">R$&nbsp;14&nbsp;mil</td><td class="n">R$&nbsp;27&nbsp;mil</td><td class="n">R$&nbsp;158&nbsp;mil</td></tr>
+<tr class="sub"><td>Total por ano</td><td class="n">R$&nbsp;353&nbsp;mil</td><td class="n">R$&nbsp;380&nbsp;mil</td><td class="n">R$&nbsp;970&nbsp;mil</td></tr>
+<tr class="tot"><td>Total em 5 anos</td><td class="n">R$&nbsp;1,76&nbsp;mi</td><td class="n">R$&nbsp;1,90&nbsp;mi</td><td class="n">R$&nbsp;4,85&nbsp;mi</td></tr>
+<tr class=""><td>IA própria, básico, 5 anos<small>das tabelas acima</small></td><td class="n">R$&nbsp;5,27&nbsp;mi</td><td class="n">R$&nbsp;6,68&nbsp;mi</td><td class="n">R$&nbsp;14,32&nbsp;mi</td></tr>
+<tr class="tot"><td>A IA própria custa</td><td class="n">3,0 vezes mais</td><td class="n">3,5 vezes mais</td><td class="n">3,0 vezes mais</td></tr>
+</tbody></table></div>
+  <p class="nota">Conta dos tokens, comunidade toda: metade da entrada a preço cheio (63 bilhões × US$ 0,15 = US$ 9.450), metade repetida (63 bilhões × US$ 0,03 = US$ 1.890) e a saída (42 bilhões × US$ 0,50 = US$ 21.000). Total: US$ 32.340 por ano, ou R$ 161,7 mil a R$ 5 por dólar. Os valores são o meio de cada faixa: hospedagem de R$ 50 a 100 mil por ano nos públicos menores e de R$ 100 a 200 mil na comunidade toda.</p>
+</div>
+<section class="texto">
+  <p>O uso do modelo é a menor parte da conta: mesmo para a comunidade toda, fica abaixo de R$ 200 mil por ano, metade do custo de uma equipe de 2 pessoas. Pagando por uso, a conta em 5 anos fica de 3 a 3,5 vezes menor que a do modelo próprio no cenário básico.</p>
+  <p>Em troca, as mensagens saem da universidade. Com a Z.ai, vão para a China. Contratar o mesmo modelo de uma empresa americana, como a Fireworks, encarece os tokens em cerca de 25% e leva os dados para os Estados Unidos. Os textos também passam a depender do contrato e dos termos de uso de uma empresa estrangeira.</p>
 </section>
 
-<section>
-  <h2>Antes de comprar, faltam testes e cotações</h2>
-  <p>Estes números orientam a conversa; não são um orçamento.</p>
-  <ul>
-    <li>A qualidade dos modelos em português não foi medida. Nenhum dos dois modelos considerados tem avaliação pública em português (ENEM, OAB ou o teste PoETa v2). Num índice internacional de qualidade, de 0 a 100, o GLM 5.3 Flash marca 42 e o melhor modelo fechado, 58.</li>
-    <li>A velocidade do servidor é uma estimativa, e a folga é de só 8%. Falta medir com perguntas reais da universidade, na precisão escolhida.</li>
-    <li>O tamanho real das mensagens e o número de pessoas por dia só um piloto mostra.</li>
-    <li>O único preço nacional real do servidor é o do contrato do Ministério Público de Minas Gerais. Falta cotação formal.</li>
-    <li>Não se sabe se a isenção da Lei 8.010/90 vale para um serviço institucional, que não é só pesquisa. Sem ela, a referência passa a ser a compra no Brasil: R$ 16,5 a 20,8 milhões em 5 anos.</li>
-    <li>Não há parecer jurídico sobre contratar o serviço de uma empresa chinesa.</li>
-    <li>O custo do caminho do meio (parte dentro, parte contratada) não foi calculado.</li>
-    <li>Preços de 13/10/2026, constantes por 5 anos, com o mesmo equipamento o tempo todo e sem valor de revenda no fim.</li>
-  </ul>
+<section class="opiniao" aria-labelledby="t-op">
+  <div class="kicker">Opinião</div>
+  <h2 id="t-op">Opinião do Victor após o levantamento</h2>
+  <p>Rodar um modelo próprio seria muito interessante e traria muito aprendizado para a UFG. Mas não acredito que exista, hoje, uma demanda real que justifique esse investimento.</p>
+  <p>Para o dia a dia, docentes e técnicos já têm acesso ao Gemini pela conta Google da universidade. O que a UFG poderia fazer é reforçar ainda mais essa parceria, como fez o Governo de Goiás com o programa GO.IA Gemini.</p>
+  <p>A meu ver, um modelo próprio só faria sentido se houvesse quem construísse aplicações reais com ele. Um exemplo é o SEI. Imagine usá-lo conversando, em linguagem natural, com um assistente. Pergunto como estão meus processos, e ele me traz os blocos e documentos que esperam minha assinatura e o andamento de remanejamentos, ofícios, afastamentos ou qualquer processo atribuído a mim. Na hora de abrir um processo, digo exatamente o que preciso, e ele separa os modelos certos e já faz o preenchimento. Há muito o que automatizar e facilitar no SEI, e para esse uso um modelo local seria fundamental, para garantir com total certeza que os documentos ficam só na UFG. A Anatel já criou um módulo de IA para o SEI e o abriu a outros órgãos, mas ele usa o GPT-4o da Microsoft, que roda fora do órgão.</p>
+  <p>Havendo uma demanda assim, que mude de fato a rotina da UFG, acho extremamente válido rodar um modelo local. Já para as atividades do dia a dia, que qualquer IA resolve, o custo e o trabalho de um modelo próprio não compensam o investimento.</p>
+  <p>Há ainda um limite prático. Sozinho, um modelo local não tem acesso à internet. Para pesquisar, a universidade teria de pagar um serviço de busca, como a Tavily, e tudo o que fosse pesquisado sairia da UFG do mesmo jeito. Para pesquisa, seria melhor ficar com a parceria com o Google.</p>
 </section>
 
-<section>
-  <h2>Como a conta foi feita</h2>
-  <ul>
-    <li>Modelo: GLM 5.3 Flash. O caso do CEIA/LaMCAD foi calculado com o DeepSeek V4.1 Flash.</li>
-    <li>Mensagens por pessoa por dia: 20 na comunidade toda; 12 nos grupos menores e no caso do CEIA/LaMCAD.</li>
-    <li>Cada mensagem: cerca de 3.000 tokens de entrada e 1.000 de saída. 20% das mensagens caem na hora de maior uso. 25 dias de uso por mês.</li>
-    <li>Câmbio de R$ 5,00 por dólar. Energia pela tarifa da Equatorial Goiás, com tributos.</li>
-    <li>Por pessoa ativa, por mês = custo em 5 anos ÷ 60 meses ÷ pessoas que usam por dia.</li>
-  </ul>
-  <p class="note">Fontes principais: <a href="https://www.mpmg.mp.br/data/files/D0/94/FC/99/C4B9C910BAE029C9BAA8F9C2/SEI_MPMG%20-%209629102%20-%20Contrato%20CLICK.pdf">contrato do MPMG</a> (servidor Dell 8×B300, dez/2025); <a href="https://pncp.gov.br/pncp-api/v1/orgaos/06981344000105/compras/2025/98/atas">ata do TJ-PI 94/2025</a>; <a href="https://ciaam.usp.br/pt/jairu/">cluster Jairu da USP</a>; medições de velocidade do <a href="https://inferencex.semianalysis.com/">InferenceX (SemiAnalysis)</a>; índice da <a href="https://artificialanalysis.ai/leaderboards/models">Artificial Analysis</a>; preços oficiais da <a href="https://api-docs.deepseek.com/quick_start/pricing/">DeepSeek</a>, da <a href="https://docs.z.ai/guides/overview/pricing">Z.ai</a> e da Fireworks; <a href="https://secplan.ufg.br/p/54633-relato-integrado-de-gestao-rig-2024">Relato Integrado de Gestão 2024 da UFG</a>; <a href="https://lamcad.ufg.br/n/204382-uma-nova-perspectiva-para-o-lamcad-ufg-entenda-a-expansao-do-laboratorio">site do LaMCAD</a>.</p>
+<section class="texto metodo">
+  <details>
+    <summary>Como a conta foi feita</summary>
+  <p>O levantamento usa a UFG como referência: 30.838 estudantes, 2.160 docentes e 2.195 técnicos-administrativos, segundo o Relato Integrado de Gestão 2024. Os públicos supõem adoção alta: perto de metade dos docentes e técnicos usando todo dia, e 20% da comunidade toda, perto do que a Universidade de Michigan observa (cerca de 18% por dia). Cada mensagem usa 3.000 tokens de entrada e 1.000 de saída, e o uso vai de 25 dias por mês, 300 por ano.</p>
+  <p>A máquina é dimensionada para a hora de maior uso, que concentra um quinto das mensagens do dia. O servidor com 8 placas RTX PRO 6000 gera cerca de 1.550 tokens por segundo com o GLM 5.3 Flash, número conservador: medições de usuários com 4 placas deram cerca de 960, o que daria perto de 1.900 com 8. O servidor com 8 placas B300 gera cerca de 14 mil, estimativa feita a partir de medições com a geração anterior de placas (B200) e do ganho da B300 medido pelo InferenceX, um teste público de velocidade. A conta usa só 60% dessas velocidades, por segurança. Nas placas RTX PRO 6000, o modelo roda numa versão compactada, de cerca de 190 GB, com perda pequena de qualidade.</p>
+  <p>A conta soma a compra a 5 anos de operação, com preços constantes, câmbio de R$ 5 por dólar e sem troca de equipamento no fim do período. Cada profissional custa R$ 250 mil por ano, com encargos. Os valores das tabelas são o meio de cada faixa de preço, arredondados, e os totais somam as linhas como aparecem; ao clicar numa linha, aparece a faixa. O custo por pessoa divide o total em 5 anos por 60 meses e pelas pessoas que usam a IA num dia, não pela comunidade inteira.</p>
+  <p>A conta não inclui: imposto estadual (ICMS) na importação, que depende do enquadramento da compra; cópia de segurança fora da universidade; licenças de software com suporte; troca de modelo ou de máquina depois de 5 anos; inflação e reajustes. Também não inclui o trabalho de quem constrói aplicações sobre o modelo.</p>
+  <p>O que só um teste mostra: a velocidade real do modelo nessas máquinas, o tamanho real das mensagens e quantas pessoas de fato usariam. Antes de qualquer compra, vale um piloto com um público pequeno.</p>
+  </details>
+  <p class="nota">Fontes principais: <a href="https://www.mpmg.mp.br/data/files/D0/94/FC/99/C4B9C910BAE029C9BAA8F9C2/SEI_MPMG%20-%209629102%20-%20Contrato%20CLICK.pdf">contrato do MPMG</a> (servidor Dell 8×B300, dez/2025); <a href="https://pncp.gov.br/pncp-api/v1/orgaos/06981344000105/compras/2025/98/atas">ata do TJ-PI 94/2025</a>; <a href="https://ciaam.usp.br/pt/jairu/">cluster Jairu da USP</a>; medições de velocidade do <a href="https://inferencex.semianalysis.com/">InferenceX (SemiAnalysis)</a>; índice da <a href="https://artificialanalysis.ai/leaderboards/models">Artificial Analysis</a>; preços oficiais da <a href="https://api-docs.deepseek.com/quick_start/pricing/">DeepSeek</a>, da <a href="https://docs.z.ai/guides/overview/pricing">Z.ai</a> e da Fireworks; <a href="https://www.jornalopcao.com.br/goias/goias-sera-o-primeiro-estado-do-brasil-a-oferecer-inteligencia-artificial-gemini-a-servidores-publicos-834259/">programa GO.IA Gemini</a> (Jornal Opção); <a href="https://convergenciadigital.com.br/governo/solucao-criada-pela-anatel-e-primeira-inteligencia-artificial-de-facil-distribuicao-no-poder-publico">módulo SEI IA da Anatel</a> (Convergência Digital); <a href="https://secplan.ufg.br/p/54633-relato-integrado-de-gestao-rig-2024">Relato Integrado de Gestão 2024 da UFG</a>; <a href="https://lamcad.ufg.br/n/204382-uma-nova-perspectiva-para-o-lamcad-ufg-entenda-a-expansao-do-laboratorio">site do LaMCAD</a>.</p>
 </section>
 </main>
+<script id="dados" type="application/json">{"doc": {"0": {"compra": [{"nome": "Servidor de IA", "v": "R$&nbsp;975&nbsp;mil", "det": "1 servidor com 8 placas Nvidia RTX PRO 6000 de 96 GB (768 GB de memória por servidor). Cada um custa de R$ 0,85 a 1,1 milhão importado diretamente, estimativa a partir do preço da placa no varejo brasileiro (R$ 93 a 114 mil) vezes 8, mais chassi, processadores, memória e 5 anos de garantia. Comprado no Brasil, de R$ 1,1 a 1,6 milhão. Na hora de maior uso, as pessoas pedem cerca de 667 tokens por segundo. Cada servidor gera uns 1.550 (medições de usuários com 4 placas deram cerca de 960; com 8, seriam perto de 1.900, então o número usado é conservador), e a conta usa só 60% disso, 930, por segurança: 1 servidor dá conta, com 40% de sobra. Faixa: R$ 0,85 a 1,10 milhões."}, {"nome": "Servidores comuns × 2", "v": "R$&nbsp;200&nbsp;mil", "det": "2 servidores sem placa de vídeo, de R$ 80 a 120 mil cada, para o site, o login, o controle de cotas e o banco de dados. Mais de um para não depender de um só."}, {"nome": "Armazenamento", "v": "R$&nbsp;140&nbsp;mil", "det": "Armazenamento 30 TB, em discos rápidos, para o modelo, os documentos e os registros. Faixa: R$ 80 mil a R$ 200 mil. O tamanho certo depende do acervo real."}, {"nome": "Rede e firewall", "v": "R$&nbsp;225&nbsp;mil", "det": "Switches (equipamentos de rede) e firewall (proteção contra invasões) do serviço. Faixa: R$ 150 mil a R$ 300 mil."}, {"nome": "Instalação no data center", "v": "R$&nbsp;275&nbsp;mil", "det": "Rack, circuito elétrico, nobreak e refrigeração, num data center que a universidade já tem. Leva de 3 a 6 meses. Faixa: R$ 150 mil a R$ 400 mil."}, {"nome": "Imprevistos (10%)", "v": "R$&nbsp;182&nbsp;mil", "det": "Reserva de 10% sobre a soma dos itens acima, para variação de preço e itens esquecidos."}], "oper": [{"nome": "Equipe (2 pessoas)", "a": "R$&nbsp;500&nbsp;mil", "det": "2 pessoas a R$ 250 mil por ano cada, custo total com encargos. Cuidam do servidor, do site, da segurança e do suporte em horário comercial. Podem ser pessoas que a universidade já tem, deslocadas para o serviço: o custo entra do mesmo jeito. Ter alguém de plantão 24 horas, todos os dias, pediria cerca de 4 pessoas só para isso.", "c": "R$&nbsp;2,50&nbsp;mi"}, {"nome": "Energia", "a": "R$&nbsp;72&nbsp;mil", "det": "8,5 kW de equipamento × 1,6 (refrigeração e perdas da sala) × R$ 5.299 por kW por ano: tarifa A4 Azul da Equatorial Goiás, com ICMS, PIS e Cofins, supondo uso médio de 75% da potência.", "c": "R$&nbsp;360&nbsp;mil"}, {"nome": "Manutenção", "a": "R$&nbsp;69&nbsp;mil", "det": "Contratos de suporte e manutenção da instalação (nobreak, refrigeração). Faixa: R$ 38 mil a R$ 100 mil por ano.", "c": "R$&nbsp;345&nbsp;mil"}, {"nome": "Busca na web", "a": "R$&nbsp;14&nbsp;mil", "det": "Sozinho, o modelo não acessa a internet: para pesquisar, usa um serviço de busca pago, de fora da universidade. A conta supõe uma busca em 10% a 20% das 12.000 mensagens do dia, a US$ 5 por mil buscas (preço da Brave). Faixa: R$ 9 mil a R$ 18 mil por ano.", "c": "R$&nbsp;70&nbsp;mil"}], "compra_tot": "R$&nbsp;2,00&nbsp;mi", "oper_ano": "R$&nbsp;655&nbsp;mil", "oper_5": "R$&nbsp;3,27&nbsp;mi", "total_n": 5272000.0, "total": "R$&nbsp;5,27&nbsp;mi", "total_faixa": "R$ 4,62 a 5,91 milhões", "pp": "R$&nbsp;88", "pp_det": "Total em 5 anos ÷ 60 meses ÷ 1.000 pessoas que usam a IA por dia. Faixa: R$ 77 a 99.", "maq": "1 servidor", "maq_sub": "com 8 placas RTX PRO 6000", "falha": "O serviço para até o conserto", "nac": "R$&nbsp;5,68&nbsp;mi"}, "1": {"compra": [{"nome": "Servidor de IA × 2", "v": "R$&nbsp;1,95&nbsp;mi", "det": "2 servidores com 8 placas Nvidia RTX PRO 6000 de 96 GB (768 GB de memória por servidor). Cada um custa de R$ 0,85 a 1,1 milhão importado diretamente, estimativa a partir do preço da placa no varejo brasileiro (R$ 93 a 114 mil) vezes 8, mais chassi, processadores, memória e 5 anos de garantia. Comprado no Brasil, de R$ 1,1 a 1,6 milhão. Na hora de maior uso, as pessoas pedem cerca de 667 tokens por segundo. Cada servidor gera uns 1.550 (medições de usuários com 4 placas deram cerca de 960; com 8, seriam perto de 1.900, então o número usado é conservador), e a conta usa só 60% disso, 930, por segurança: 1 servidor dá conta, com 40% de sobra. Mais 1 servidor de reserva, que assume se outro parar. Faixa: R$ 1,70 a 2,20 milhões."}, {"nome": "Servidores comuns × 2", "v": "R$&nbsp;200&nbsp;mil", "det": "2 servidores sem placa de vídeo, de R$ 80 a 120 mil cada, para o site, o login, o controle de cotas e o banco de dados. Mais de um para não depender de um só."}, {"nome": "Armazenamento", "v": "R$&nbsp;140&nbsp;mil", "det": "Armazenamento 30 TB, em discos rápidos, para o modelo, os documentos e os registros. Faixa: R$ 80 mil a R$ 200 mil. O tamanho certo depende do acervo real."}, {"nome": "Rede e firewall", "v": "R$&nbsp;225&nbsp;mil", "det": "Switches (equipamentos de rede) e firewall (proteção contra invasões) do serviço. Faixa: R$ 150 mil a R$ 300 mil."}, {"nome": "Instalação no data center", "v": "R$&nbsp;275&nbsp;mil", "det": "Rack, circuito elétrico, nobreak e refrigeração, num data center que a universidade já tem. Leva de 3 a 6 meses. Faixa: R$ 150 mil a R$ 400 mil."}, {"nome": "Imprevistos (10%)", "v": "R$&nbsp;279&nbsp;mil", "det": "Reserva de 10% sobre a soma dos itens acima, para variação de preço e itens esquecidos."}], "oper": [{"nome": "Equipe (2 pessoas)", "a": "R$&nbsp;500&nbsp;mil", "det": "2 pessoas a R$ 250 mil por ano cada, custo total com encargos. Cuidam do servidor, do site, da segurança e do suporte em horário comercial. Podem ser pessoas que a universidade já tem, deslocadas para o serviço: o custo entra do mesmo jeito. Ter alguém de plantão 24 horas, todos os dias, pediria cerca de 4 pessoas só para isso.", "c": "R$&nbsp;2,50&nbsp;mi"}, {"nome": "Energia", "a": "R$&nbsp;127&nbsp;mil", "det": "15,0 kW de equipamento × 1,6 (refrigeração e perdas da sala) × R$ 5.299 por kW por ano: tarifa A4 Azul da Equatorial Goiás, com ICMS, PIS e Cofins, supondo uso médio de 75% da potência. A conta supõe a reserva ligada o tempo todo, pronta para assumir.", "c": "R$&nbsp;635&nbsp;mil"}, {"nome": "Manutenção", "a": "R$&nbsp;69&nbsp;mil", "det": "Contratos de suporte e manutenção da instalação (nobreak, refrigeração). Faixa: R$ 38 mil a R$ 100 mil por ano.", "c": "R$&nbsp;345&nbsp;mil"}, {"nome": "Busca na web", "a": "R$&nbsp;14&nbsp;mil", "det": "Sozinho, o modelo não acessa a internet: para pesquisar, usa um serviço de busca pago, de fora da universidade. A conta supõe uma busca em 10% a 20% das 12.000 mensagens do dia, a US$ 5 por mil buscas (preço da Brave). Faixa: R$ 9 mil a R$ 18 mil por ano.", "c": "R$&nbsp;70&nbsp;mil"}], "compra_tot": "R$&nbsp;3,07&nbsp;mi", "oper_ano": "R$&nbsp;710&nbsp;mil", "oper_5": "R$&nbsp;3,55&nbsp;mi", "total_n": 6619000.0, "total": "R$&nbsp;6,62&nbsp;mi", "total_faixa": "R$ 5,83 a 7,40 milhões", "pp": "R$&nbsp;110", "pp_det": "Total em 5 anos ÷ 60 meses ÷ 1.000 pessoas que usam a IA por dia. Faixa: R$ 97 a 123.", "maq": "2 servidores", "maq_sub": "com 8 placas RTX PRO 6000 cada", "falha": "A reserva assume", "nac": "R$&nbsp;7,44&nbsp;mi"}}, "doctae": {"0": {"compra": [{"nome": "Servidor de IA × 2", "v": "R$&nbsp;1,95&nbsp;mi", "det": "2 servidores com 8 placas Nvidia RTX PRO 6000 de 96 GB (768 GB de memória por servidor). Cada um custa de R$ 0,85 a 1,1 milhão importado diretamente, estimativa a partir do preço da placa no varejo brasileiro (R$ 93 a 114 mil) vezes 8, mais chassi, processadores, memória e 5 anos de garantia. Comprado no Brasil, de R$ 1,1 a 1,6 milhão. Na hora de maior uso, as pessoas pedem cerca de 1.333 tokens por segundo. Cada servidor gera uns 1.550 (medições de usuários com 4 placas deram cerca de 960; com 8, seriam perto de 1.900, então o número usado é conservador), e a conta usa só 60% disso, 930, por segurança: 2 servidores dão conta, com 40% de sobra. Faixa: R$ 1,70 a 2,20 milhões."}, {"nome": "Servidores comuns × 2", "v": "R$&nbsp;200&nbsp;mil", "det": "2 servidores sem placa de vídeo, de R$ 80 a 120 mil cada, para o site, o login, o controle de cotas e o banco de dados. Mais de um para não depender de um só."}, {"nome": "Armazenamento", "v": "R$&nbsp;140&nbsp;mil", "det": "Armazenamento 30 TB, em discos rápidos, para o modelo, os documentos e os registros. Faixa: R$ 80 mil a R$ 200 mil. O tamanho certo depende do acervo real."}, {"nome": "Rede e firewall", "v": "R$&nbsp;225&nbsp;mil", "det": "Switches (equipamentos de rede) e firewall (proteção contra invasões) do serviço. Faixa: R$ 150 mil a R$ 300 mil."}, {"nome": "Instalação no data center", "v": "R$&nbsp;275&nbsp;mil", "det": "Rack, circuito elétrico, nobreak e refrigeração, num data center que a universidade já tem. Leva de 3 a 6 meses. Faixa: R$ 150 mil a R$ 400 mil."}, {"nome": "Imprevistos (10%)", "v": "R$&nbsp;279&nbsp;mil", "det": "Reserva de 10% sobre a soma dos itens acima, para variação de preço e itens esquecidos."}], "oper": [{"nome": "Equipe (2 pessoas)", "a": "R$&nbsp;500&nbsp;mil", "det": "2 pessoas a R$ 250 mil por ano cada, custo total com encargos. Cuidam do servidor, do site, da segurança e do suporte em horário comercial. Podem ser pessoas que a universidade já tem, deslocadas para o serviço: o custo entra do mesmo jeito. Ter alguém de plantão 24 horas, todos os dias, pediria cerca de 4 pessoas só para isso.", "c": "R$&nbsp;2,50&nbsp;mi"}, {"nome": "Energia", "a": "R$&nbsp;127&nbsp;mil", "det": "15,0 kW de equipamento × 1,6 (refrigeração e perdas da sala) × R$ 5.299 por kW por ano: tarifa A4 Azul da Equatorial Goiás, com ICMS, PIS e Cofins, supondo uso médio de 75% da potência.", "c": "R$&nbsp;635&nbsp;mil"}, {"nome": "Manutenção", "a": "R$&nbsp;69&nbsp;mil", "det": "Contratos de suporte e manutenção da instalação (nobreak, refrigeração). Faixa: R$ 38 mil a R$ 100 mil por ano.", "c": "R$&nbsp;345&nbsp;mil"}, {"nome": "Busca na web", "a": "R$&nbsp;27&nbsp;mil", "det": "Sozinho, o modelo não acessa a internet: para pesquisar, usa um serviço de busca pago, de fora da universidade. A conta supõe uma busca em 10% a 20% das 24.000 mensagens do dia, a US$ 5 por mil buscas (preço da Brave). Faixa: R$ 18 mil a R$ 36 mil por ano.", "c": "R$&nbsp;135&nbsp;mil"}], "compra_tot": "R$&nbsp;3,07&nbsp;mi", "oper_ano": "R$&nbsp;723&nbsp;mil", "oper_5": "R$&nbsp;3,62&nbsp;mi", "total_n": 6684000.0, "total": "R$&nbsp;6,68&nbsp;mi", "total_faixa": "R$ 5,88 a 7,49 milhões", "pp": "R$&nbsp;56", "pp_det": "Total em 5 anos ÷ 60 meses ÷ 2.000 pessoas que usam a IA por dia. Faixa: R$ 49 a 62.", "maq": "2 servidores", "maq_sub": "com 8 placas RTX PRO 6000 cada", "falha": "Atende só metade", "nac": "R$&nbsp;7,51&nbsp;mi"}, "1": {"compra": [{"nome": "Servidor de IA × 3", "v": "R$&nbsp;2,93&nbsp;mi", "det": "3 servidores com 8 placas Nvidia RTX PRO 6000 de 96 GB (768 GB de memória por servidor). Cada um custa de R$ 0,85 a 1,1 milhão importado diretamente, estimativa a partir do preço da placa no varejo brasileiro (R$ 93 a 114 mil) vezes 8, mais chassi, processadores, memória e 5 anos de garantia. Comprado no Brasil, de R$ 1,1 a 1,6 milhão. Na hora de maior uso, as pessoas pedem cerca de 1.333 tokens por segundo. Cada servidor gera uns 1.550 (medições de usuários com 4 placas deram cerca de 960; com 8, seriam perto de 1.900, então o número usado é conservador), e a conta usa só 60% disso, 930, por segurança: 2 servidores dão conta, com 40% de sobra. Mais 1 servidor de reserva, que assume se outro parar. Faixa: R$ 2,55 a 3,30 milhões."}, {"nome": "Servidores comuns × 2", "v": "R$&nbsp;200&nbsp;mil", "det": "2 servidores sem placa de vídeo, de R$ 80 a 120 mil cada, para o site, o login, o controle de cotas e o banco de dados. Mais de um para não depender de um só."}, {"nome": "Armazenamento", "v": "R$&nbsp;140&nbsp;mil", "det": "Armazenamento 30 TB, em discos rápidos, para o modelo, os documentos e os registros. Faixa: R$ 80 mil a R$ 200 mil. O tamanho certo depende do acervo real."}, {"nome": "Rede e firewall", "v": "R$&nbsp;225&nbsp;mil", "det": "Switches (equipamentos de rede) e firewall (proteção contra invasões) do serviço. Faixa: R$ 150 mil a R$ 300 mil."}, {"nome": "Instalação no data center", "v": "R$&nbsp;394&nbsp;mil", "det": "Rack, circuito elétrico, nobreak e refrigeração, num data center que a universidade já tem. Leva de 3 a 6 meses. Com 3 servidores, a instalação cresce para 21,5 kW. Faixa: R$ 215 mil a R$ 573 mil."}, {"nome": "Imprevistos (10%)", "v": "R$&nbsp;388&nbsp;mil", "det": "Reserva de 10% sobre a soma dos itens acima, para variação de preço e itens esquecidos."}], "oper": [{"nome": "Equipe (2 pessoas)", "a": "R$&nbsp;500&nbsp;mil", "det": "2 pessoas a R$ 250 mil por ano cada, custo total com encargos. Cuidam do servidor, do site, da segurança e do suporte em horário comercial. Podem ser pessoas que a universidade já tem, deslocadas para o serviço: o custo entra do mesmo jeito. Ter alguém de plantão 24 horas, todos os dias, pediria cerca de 4 pessoas só para isso.", "c": "R$&nbsp;2,50&nbsp;mi"}, {"nome": "Energia", "a": "R$&nbsp;182&nbsp;mil", "det": "21,5 kW de equipamento × 1,6 (refrigeração e perdas da sala) × R$ 5.299 por kW por ano: tarifa A4 Azul da Equatorial Goiás, com ICMS, PIS e Cofins, supondo uso médio de 75% da potência. A conta supõe a reserva ligada o tempo todo, pronta para assumir.", "c": "R$&nbsp;910&nbsp;mil"}, {"nome": "Manutenção", "a": "R$&nbsp;75&nbsp;mil", "det": "Contratos de suporte e manutenção da instalação (nobreak, refrigeração). Faixa: R$ 41 mil a R$ 109 mil por ano.", "c": "R$&nbsp;375&nbsp;mil"}, {"nome": "Busca na web", "a": "R$&nbsp;27&nbsp;mil", "det": "Sozinho, o modelo não acessa a internet: para pesquisar, usa um serviço de busca pago, de fora da universidade. A conta supõe uma busca em 10% a 20% das 24.000 mensagens do dia, a US$ 5 por mil buscas (preço da Brave). Faixa: R$ 18 mil a R$ 36 mil por ano.", "c": "R$&nbsp;135&nbsp;mil"}], "compra_tot": "R$&nbsp;4,28&nbsp;mi", "oper_ano": "R$&nbsp;784&nbsp;mil", "oper_5": "R$&nbsp;3,92&nbsp;mi", "total_n": 8197000.0, "total": "R$&nbsp;8,20&nbsp;mi", "total_faixa": "R$ 7,18 a 9,21 milhões", "pp": "R$&nbsp;68", "pp_det": "Total em 5 anos ÷ 60 meses ÷ 2.000 pessoas que usam a IA por dia. Faixa: R$ 60 a 77.", "maq": "3 servidores", "maq_sub": "com 8 placas RTX PRO 6000 cada", "falha": "A reserva assume", "nac": "R$&nbsp;9,43&nbsp;mi"}}, "todos": {"0": {"compra": [{"nome": "Servidor de IA", "v": "R$&nbsp;4,00&nbsp;mi", "det": "1 servidor com 8 placas Nvidia B300 de 288 GB (2.304 GB de memória por servidor). Cada um custa de R$ 3,5 a 4,5 milhões importado diretamente, estimativa a partir da compra do cluster Jairu, da USP. Comprado no Brasil por licitação, de R$ 7,1 a 8,7 milhões (contrato do Ministério Público de Minas Gerais, dez/2025). Na hora de maior uso, as 7.000 pessoas pedem cerca de 7.778 tokens por segundo. O servidor gera uns 14 mil (estimativa), e a conta usa só 60% disso, 8.395, por segurança: sobram 8%. Se a velocidade real for 7% menor, já seria preciso um segundo servidor. Faixa: R$ 3,50 a 4,50 milhões."}, {"nome": "Servidores comuns × 3", "v": "R$&nbsp;300&nbsp;mil", "det": "3 servidores sem placa de vídeo, de R$ 80 a 120 mil cada, para o site, o login, o controle de cotas e o banco de dados. Mais de um para não depender de um só."}, {"nome": "Armazenamento", "v": "R$&nbsp;450&nbsp;mil", "det": "Armazenamento 100 TB, para o modelo, os documentos e os registros. Faixa: R$ 300 mil a R$ 600 mil. O tamanho certo depende do acervo real."}, {"nome": "Rede e firewall", "v": "R$&nbsp;600&nbsp;mil", "det": "Switches (equipamentos de rede) e firewall (proteção contra invasões) do serviço. Faixa: R$ 400 mil a R$ 800 mil."}, {"nome": "Adaptação da sala", "v": "R$&nbsp;1,05&nbsp;mi", "det": "Adaptação de uma sala que a universidade já tem: nobreak, refrigeração e proteção contra incêndio. Supõe que a energia e o gerador já existem. Leva de 6 a 12 meses. Faixa: R$ 0,80 a 1,30 milhões."}, {"nome": "Imprevistos (10%)", "v": "R$&nbsp;640&nbsp;mil", "det": "Reserva de 10% sobre a soma dos itens acima, para variação de preço e itens esquecidos."}], "oper": [{"nome": "Equipe (4 pessoas)", "a": "R$&nbsp;1,00&nbsp;mi", "det": "4 pessoas a R$ 250 mil por ano cada, custo total com encargos. Cuidam do servidor, do site, da segurança e do suporte em horário comercial. Podem ser pessoas que a universidade já tem, deslocadas para o serviço: o custo entra do mesmo jeito. Ter alguém de plantão 24 horas, todos os dias, pediria cerca de 4 pessoas só para isso.", "c": "R$&nbsp;5,00&nbsp;mi"}, {"nome": "Energia", "a": "R$&nbsp;131&nbsp;mil", "det": "16,5 kW de equipamento × 1,5 (refrigeração e perdas da sala) × R$ 5.299 por kW por ano: tarifa A4 Azul da Equatorial Goiás, com ICMS, PIS e Cofins, supondo uso médio de 75% da potência.", "c": "R$&nbsp;655&nbsp;mil"}, {"nome": "Manutenção", "a": "R$&nbsp;168&nbsp;mil", "det": "Contratos de suporte e manutenção da instalação (nobreak, refrigeração). Faixa: R$ 108 mil a R$ 228 mil por ano.", "c": "R$&nbsp;840&nbsp;mil"}, {"nome": "Busca na web", "a": "R$&nbsp;158&nbsp;mil", "det": "Sozinho, o modelo não acessa a internet: para pesquisar, usa um serviço de busca pago, de fora da universidade. A conta supõe uma busca em 10% a 20% das 140.000 mensagens do dia, a US$ 5 por mil buscas (preço da Brave). Faixa: R$ 105 mil a R$ 210 mil por ano.", "c": "R$&nbsp;790&nbsp;mil"}], "compra_tot": "R$&nbsp;7,04&nbsp;mi", "oper_ano": "R$&nbsp;1,46&nbsp;mi", "oper_5": "R$&nbsp;7,29&nbsp;mi", "total_n": 14325000.0, "total": "R$&nbsp;14,32&nbsp;mi", "total_faixa": "R$ 12,5 a 16,2 milhões", "pp": "R$&nbsp;34", "pp_det": "Total em 5 anos ÷ 60 meses ÷ 7.000 pessoas que usam a IA por dia. Faixa: R$ 30 a 38.", "maq": "1 servidor", "maq_sub": "com 8 placas B300", "falha": "O serviço para até o conserto", "nac": "R$&nbsp;18,63&nbsp;mi"}, "1": {"compra": [{"nome": "Servidor de IA × 2", "v": "R$&nbsp;8,00&nbsp;mi", "det": "2 servidores com 8 placas Nvidia B300 de 288 GB (2.304 GB de memória por servidor). Cada um custa de R$ 3,5 a 4,5 milhões importado diretamente, estimativa a partir da compra do cluster Jairu, da USP. Comprado no Brasil por licitação, de R$ 7,1 a 8,7 milhões (contrato do Ministério Público de Minas Gerais, dez/2025). Na hora de maior uso, as 7.000 pessoas pedem cerca de 7.778 tokens por segundo. O servidor gera uns 14 mil (estimativa), e a conta usa só 60% disso, 8.395, por segurança: sobram 8%. Mais 1 servidor de reserva, que assume se o outro parar. Se a velocidade real for 7% menor, porém, a reserva teria de entrar no atendimento de todo dia. Faixa: R$ 7,00 a 9,00 milhões."}, {"nome": "Servidores comuns × 3", "v": "R$&nbsp;300&nbsp;mil", "det": "3 servidores sem placa de vídeo, de R$ 80 a 120 mil cada, para o site, o login, o controle de cotas e o banco de dados. Mais de um para não depender de um só."}, {"nome": "Armazenamento", "v": "R$&nbsp;450&nbsp;mil", "det": "Armazenamento 100 TB, para o modelo, os documentos e os registros. Faixa: R$ 300 mil a R$ 600 mil. O tamanho certo depende do acervo real."}, {"nome": "Rede e firewall", "v": "R$&nbsp;600&nbsp;mil", "det": "Switches (equipamentos de rede) e firewall (proteção contra invasões) do serviço. Faixa: R$ 400 mil a R$ 800 mil."}, {"nome": "Adaptação da sala", "v": "R$&nbsp;1,60&nbsp;mi", "det": "Adaptação de uma sala que a universidade já tem: nobreak, refrigeração e proteção contra incêndio. Supõe que a energia e o gerador já existem. Leva de 6 a 12 meses. Faixa: R$ 1,20 a 2,00 milhões."}, {"nome": "Imprevistos (10%)", "v": "R$&nbsp;1,10&nbsp;mi", "det": "Reserva de 10% sobre a soma dos itens acima, para variação de preço e itens esquecidos."}], "oper": [{"nome": "Equipe (5 pessoas)", "a": "R$&nbsp;1,25&nbsp;mi", "det": "5 pessoas a R$ 250 mil por ano cada, custo total com encargos. Cuidam do servidor, do site, da segurança e do suporte em horário comercial. Podem ser pessoas que a universidade já tem, deslocadas para o serviço: o custo entra do mesmo jeito. Ter alguém de plantão 24 horas, todos os dias, pediria cerca de 4 pessoas só para isso.", "c": "R$&nbsp;6,25&nbsp;mi"}, {"nome": "Energia", "a": "R$&nbsp;246&nbsp;mil", "det": "31,0 kW de equipamento × 1,5 (refrigeração e perdas da sala) × R$ 5.299 por kW por ano: tarifa A4 Azul da Equatorial Goiás, com ICMS, PIS e Cofins, supondo uso médio de 75% da potência. A conta supõe a reserva ligada o tempo todo, pronta para assumir.", "c": "R$&nbsp;1,23&nbsp;mi"}, {"nome": "Manutenção", "a": "R$&nbsp;201&nbsp;mil", "det": "Contratos de suporte e manutenção da instalação (nobreak, refrigeração). Faixa: R$ 132 mil a R$ 270 mil por ano.", "c": "R$&nbsp;1,00&nbsp;mi"}, {"nome": "Busca na web", "a": "R$&nbsp;158&nbsp;mil", "det": "Sozinho, o modelo não acessa a internet: para pesquisar, usa um serviço de busca pago, de fora da universidade. A conta supõe uma busca em 10% a 20% das 140.000 mensagens do dia, a US$ 5 por mil buscas (preço da Brave). Faixa: R$ 105 mil a R$ 210 mil por ano.", "c": "R$&nbsp;790&nbsp;mil"}], "compra_tot": "R$&nbsp;12,05&nbsp;mi", "oper_ano": "R$&nbsp;1,85&nbsp;mi", "oper_5": "R$&nbsp;9,28&nbsp;mi", "total_n": 21325000.0, "total": "R$&nbsp;21,32&nbsp;mi", "total_faixa": "R$ 18,7 a 23,9 milhões", "pp": "R$&nbsp;51", "pp_det": "Total em 5 anos ÷ 60 meses ÷ 7.000 pessoas que usam a IA por dia. Faixa: R$ 45 a 57.", "maq": "2 servidores", "maq_sub": "com 8 placas B300 cada", "falha": "A reserva assume", "nac": "R$&nbsp;29,93&nbsp;mi"}}}</script>
+<script>
+// Cada cartão de público mostra o cenário escolhido (básico ou com redundância); clicar numa linha abre o detalhe da conta.
+const D = JSON.parse(document.getElementById('dados').textContent);
+
+function linha(id, celulas, det) {
+  return `<tr class="linha" tabindex="0" role="button" aria-expanded="false" aria-controls="${id}">${celulas}</tr>` +
+         `<tr class="det" id="${id}" hidden><td colspan="3">${det}</td></tr>`;
+}
+
+function render(card) {
+  const k = card.dataset.k, res = card.dataset.res || '0', c = D[k][res];
+  const compra = c.compra.map((r, i) => linha(`${k}-c${i}`, `<td>${r.nome}</td><td class="n">${r.v}</td>`, r.det)).join('');
+  const oper = c.oper.map((r, i) => linha(`${k}-o${i}`, `<td>${r.nome}</td><td class="n">${r.a}</td><td class="n">${r.c}</td>`, r.det)).join('');
+  card.querySelector('.pub-body').innerHTML = `
+  <div class="kpis">
+    <div class="kpi total"><div class="r">Total em 5 anos</div><div class="v">${c.total}</div><div class="s">compra + operação</div></div>
+    <div class="kpi"><div class="r">Por pessoa, por mês</div><div class="v">${c.pp}</div><div class="s">de quem usa no dia</div></div>
+    <div class="kpi"><div class="r">Máquina de IA</div><div class="v">${c.maq}</div><div class="s">${c.maq_sub}</div></div>
+    <div class="kpi"><div class="r">Se um servidor parar</div><div class="v" style="font-size:17px;padding-top:5px">${c.falha}</div></div>
+  </div>
+  <div class="blocos">
+    <div class="bloco"><h4>Compra, uma vez</h4>
+      <table><thead><tr><th>Item</th><th>Valor</th></tr></thead><tbody>${compra}
+      <tr class="soma"><td>Total da compra</td><td class="n">${c.compra_tot}</td></tr></tbody></table></div>
+    <div class="bloco"><h4>Operação</h4>
+      <table><thead><tr><th>Item</th><th>Por ano</th><th>Em 5 anos</th></tr></thead><tbody>${oper}
+      <tr class="soma"><td>Total</td><td class="n">${c.oper_ano}</td><td class="n">${c.oper_5}</td></tr></tbody></table></div>
+  </div>
+  <div class="total-linha"><span>Compra ${c.compra_tot} + operação em 5 anos ${c.oper_5}</span><b>${c.total}</b></div>
+  <div class="rodape">
+    <p>Valores de importação direta do servidor, arredondados; cada um é o meio de uma faixa (${c.total_faixa} no total). Com o servidor comprado no Brasil, por licitação, o total seria ${c.nac}.</p>
+  </div>`;
+  card.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.res === res)));
+}
+
+function abre(tr) {
+  const det = document.getElementById(tr.getAttribute('aria-controls')), aberto = tr.getAttribute('aria-expanded') === 'true';
+  tr.setAttribute('aria-expanded', String(!aberto));
+  det.hidden = aberto;
+}
+
+document.querySelectorAll('.pub').forEach(card => {
+  render(card);
+  card.addEventListener('click', e => {
+    const b = e.target.closest('.seg button');
+    if (b) { card.dataset.res = b.dataset.res; render(card); return; }
+    const tr = e.target.closest('.linha');
+    if (tr) abre(tr);
+  });
+  card.addEventListener('keydown', e => {
+    const tr = e.target.closest('.linha');
+    if (tr && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); abre(tr); }
+  });
+});
+
+</script>
 </body>
 </html>
