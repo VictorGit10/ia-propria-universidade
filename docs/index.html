@@ -25,6 +25,7 @@ main{max-width:760px;margin:0 auto;padding:56px 20px 80px}
 a{color:var(--accent);text-underline-offset:2px}
 h1,h2,h3{font-family:var(--serif);font-weight:700;color:var(--ink);text-wrap:balance}
 .topo{border-top:3px solid var(--ink);padding-top:18px;margin-bottom:40px}
+.leitura{display:inline-flex;align-items:center;gap:7px;margin:14px 0 2px;padding:6px 13px;border-radius:999px;background:var(--mark-soft);color:var(--mark);font:600 14.5px/1.2 var(--sans)}
 .eyebrow,.kicker{font-family:var(--sans);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
 h1{font-size:clamp(34px,6vw,50px);line-height:1.1;margin:14px 0 22px;letter-spacing:-.01em}
 .lead{font-size:clamp(20px,2.6vw,23px);line-height:1.5;color:#2c343e;margin:0 0 10px}
@@ -120,7 +121,8 @@ details p{font-size:16.5px}
 <body>
 <main>
 <header class="topo">
-  <div class="eyebrow">Levantamento · UFG como referência · outubro de 2026 · 10 min de leitura</div>
+  <div class="eyebrow">Levantamento · UFG como referência · outubro de 2026</div>
+  <div class="leitura"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Leitura de 13 minutos</div>
   <h1>Quanto custa ter uma IA própria rodando dentro da universidade?</h1>
   <p class="lead">Com um modelo de IA rodando dentro da universidade, as conversas e os documentos de quem usa ficam nela. E abre-se a chance de ajustar o modelo aos assuntos da própria instituição.</p>
 </header>
@@ -221,11 +223,38 @@ details p{font-size:16.5px}
   <p>Em troca, as mensagens saem da universidade. Com a Z.ai, vão para a China. Contratar o mesmo modelo de uma empresa americana, como a Fireworks, encarece os tokens em cerca de 25% e leva os dados para os Estados Unidos. Os textos também passam a depender do contrato e dos termos de uso de uma empresa estrangeira.</p>
 </section>
 
+<section class="texto">
+  <h2>E se a universidade alugasse o servidor?</h2>
+  <p>Há um caminho entre comprar e pagar por uso: alugar numa nuvem uma máquina com placas de IA e rodar nela o mesmo modelo, pagando por hora. A universidade não compra equipamento nem prepara sala, e escolhe o modelo e as regras de uso. As conversas, porém, passam pelo data center da empresa que aluga a máquina. Para que fiquem no Brasil, a máquina precisa estar numa região brasileira da nuvem.</p>
+  <p>Em São Paulo, a Amazon (AWS) aluga uma máquina com 8 placas H100 por US$ 92 por hora e uma com 8 placas B300 por US$ 281 por hora, a preço de lista. Não há máquina com placas RTX PRO 6000 na região, e a H100 entra no lugar dela. A Microsoft, também em São Paulo, cobra US$ 170 por hora por 8 placas H200. Como a máquina alugada pode ser desligada quando ninguém usa, a tabela mostra o custo com ela ligada o tempo todo e só no expediente, 12 horas por dia nos dias úteis. No segundo caso, o serviço fica fora do ar à noite, nos fins de semana e nos feriados.</p>
+</section>
+<div class="largo">
+<div class="scroll"><table class="api">
+<thead><tr><th>Alugar o servidor</th><th class="n">Docentes</th><th class="n">Docentes e técnicos</th><th class="n">Comunidade toda</th></tr></thead><tbody>
+<tr class=""><td>Máquina alugada<small>AWS, região de São Paulo</small></td><td class="n">1 × 8 placas H100</td><td class="n">2 × 8 placas H100</td><td class="n">1 × 8 placas B300</td></tr>
+<tr class=""><td>Preço por hora<small>preço de lista, sem desconto</small></td><td class="n">US$&nbsp;92</td><td class="n">US$&nbsp;185</td><td class="n">US$&nbsp;281</td></tr>
+<tr class=""><td>Ligada o tempo todo, por ano<small>24 horas × 365 dias, a R$ 5 por dólar</small></td><td class="n">R$&nbsp;4,05&nbsp;mi</td><td class="n">R$&nbsp;8,10&nbsp;mi</td><td class="n">R$&nbsp;12,31&nbsp;mi</td></tr>
+<tr class="sub"><td>Ligada só no expediente, por ano<small>12 horas × 250 dias úteis</small></td><td class="n">R$&nbsp;1,39&nbsp;mi</td><td class="n">R$&nbsp;2,77&nbsp;mi</td><td class="n">R$&nbsp;4,22&nbsp;mi</td></tr>
+<tr class=""><td>Equipe<small>a do pago por uso, mais 1 pessoa para o modelo</small></td><td class="n">R$&nbsp;500&nbsp;mil<small>2 pessoas</small></td><td class="n">R$&nbsp;500&nbsp;mil<small>2 pessoas</small></td><td class="n">R$&nbsp;750&nbsp;mil<small>3 pessoas</small></td></tr>
+<tr class=""><td>Site e hospedagem<small>igual à do pago por uso</small></td><td class="n">R$&nbsp;75&nbsp;mil</td><td class="n">R$&nbsp;75&nbsp;mil</td><td class="n">R$&nbsp;150&nbsp;mil</td></tr>
+<tr class=""><td>Busca na web<small>igual à da IA própria</small></td><td class="n">R$&nbsp;14&nbsp;mil</td><td class="n">R$&nbsp;27&nbsp;mil</td><td class="n">R$&nbsp;158&nbsp;mil</td></tr>
+<tr class="sub"><td>Total do aluguel por ano, só no expediente</td><td class="n">R$&nbsp;1,98&nbsp;mi</td><td class="n">R$&nbsp;3,37&nbsp;mi</td><td class="n">R$&nbsp;5,28&nbsp;mi</td></tr>
+<tr class="tot"><td>Total do aluguel em 5 anos, só no expediente</td><td class="n">R$&nbsp;9,89&nbsp;mi</td><td class="n">R$&nbsp;16,86&nbsp;mi</td><td class="n">R$&nbsp;26,39&nbsp;mi</td></tr>
+<tr class=""><td>Para comparar: IA própria, básico, 5 anos<small>das tabelas acima</small></td><td class="n">R$&nbsp;5,27&nbsp;mi</td><td class="n">R$&nbsp;6,68&nbsp;mi</td><td class="n">R$&nbsp;14,32&nbsp;mi</td></tr>
+<tr class=""><td>Para comparar: pago por uso, 5 anos<small>da tabela anterior</small></td><td class="n">R$&nbsp;1,76&nbsp;mi</td><td class="n">R$&nbsp;1,90&nbsp;mi</td><td class="n">R$&nbsp;4,85&nbsp;mi</td></tr>
+</tbody></table></div>
+  <p class="nota">Preços de lista da AWS na região de São Paulo, consultados em 27/10/2026: máquina p5.48xlarge (8 placas H100 de 80 GB) a US$ 92,47 por hora e p6-b300.48xlarge (8 placas B300) a US$ 281,13 por hora. O número de máquinas é o mesmo da compra; a H100 tende a ser mais rápida que a RTX PRO 6000, e para docentes e técnicos talvez uma só baste, o que cortaria pela metade o custo da máquina. Os totais usam a máquina só no expediente.</p>
+</div>
+<section class="texto">
+  <p>Mesmo desligada à noite e nos fins de semana, a máquina alugada no Brasil sai cara: para os docentes, um ano de expediente custa mais que um servidor importado, que dura os 5 anos. Contratos de 1 a 3 anos dão desconto, mas aí a máquina é paga 24 horas por dia. E desligar tem outro risco: nada garante que a nuvem tenha uma máquina livre na hora de ligar de novo.</p>
+  <p>Fora do Brasil, em empresas menores, 8 placas RTX PRO 6000 saem por US$ 12 a 17 por hora. Com esse preço, o aluguel para os docentes custaria de R$ 0,5 a 0,7 milhão por ano, ligado o tempo todo, só a máquina. Mas aí as conversas saem do país, como no pagamento por uso, que continua mais barato. Alugar faz mais sentido para um teste curto: alguns meses de piloto, antes de decidir uma compra.</p>
+</section>
+
 <section class="opiniao" aria-labelledby="t-op">
   <div class="kicker">Opinião</div>
   <h2 id="t-op">Opinião do Victor após o levantamento</h2>
-  <p>Rodar um modelo próprio seria muito interessante e traria muito aprendizado para a UFG. Mas não acredito que exista, hoje, uma demanda real que justifique esse investimento.</p>
-  <p>Para o dia a dia, docentes e técnicos já têm acesso ao Gemini pela conta Google da universidade. O que a UFG poderia fazer é reforçar ainda mais essa parceria, como fez o Governo de Goiás com o programa GO.IA Gemini.</p>
+  <p>Rodar um modelo próprio seria interessante e traria aprendizado para a UFG. Para que o investimento compense, porém, acho que ele precisaria vir de uma discussão concreta sobre quais aplicações seriam construídas com essa IA local. Só para conversas do dia a dia, não vejo um retorno que justifique o custo.</p>
+  <p>Para esse uso, docentes e técnicos já têm acesso ao Gemini pela conta Google da universidade. Um caminho seria ampliar essa parceria, como fez o Governo de Goiás com o programa GO.IA Gemini.</p>
   <p>A meu ver, um modelo próprio só faria sentido se houvesse quem construísse aplicações reais com ele. Um exemplo é o SEI. Imagine usá-lo conversando, em linguagem natural, com um assistente. Pergunto como estão meus processos, e ele me traz os blocos e documentos que esperam minha assinatura e o andamento de remanejamentos, ofícios, afastamentos ou qualquer processo atribuído a mim. Na hora de abrir um processo, digo exatamente o que preciso, e ele separa os modelos certos e já faz o preenchimento. Há muito o que automatizar e facilitar no SEI, e para esse uso um modelo local seria fundamental, para garantir com total certeza que os documentos ficam só na UFG. A Anatel já criou um módulo de IA para o SEI e o abriu a outros órgãos, mas ele usa o GPT-4o, da OpenAI, que roda na nuvem da Microsoft, fora do órgão.</p>
   <p>Havendo uma demanda assim, que mude de fato a rotina da UFG, acho extremamente válido rodar um modelo local. Já para as atividades do dia a dia, que qualquer IA resolve, o custo e o trabalho de um modelo próprio não compensam o investimento.</p>
   <p>Há ainda um limite prático. Sozinho, um modelo local não tem acesso à internet. Para pesquisar, a universidade teria de pagar um serviço de busca, como a Tavily, e tudo o que fosse pesquisado sairia da UFG do mesmo jeito. Para pesquisa, seria melhor ficar com a parceria com o Google.</p>
